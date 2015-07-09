@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <title>Masking</title>
+  <link rel="stylesheet" href="css/css.css"/>
+</head>
+<body>
+
+<ul>
+  <li>
+    <label for="expiration"> Expiration Month</label>
+    <input id="expiration" type="tel" placeholder="MM/YY" class="masked" pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" data-valid-example="05/18">
+  </li>
+
+<li>
+  <label for="zip">Zip Code</label>
+  <input id="zip" type="tel" name="zipcode" placeholder="XXXXX" pattern="\d{5}" class="masked">
+</li>
+<li>
+  <label for="zipca">CA Zip Code</label>
+  <input id="zipca" type="tel" name="zipcodeca" placeholder="XXX XXX" pattern="\d\w\d \w\d\w" class="masked" data-charset="X_X _X_">
+</li>
+<li>
+  <label for="tel">Telephone</label>
+  <input id="tel" type="tel" name="phone" placeholder="(XXX) XXX-XXXX" pattern="\(\d{3}\) \d{3}\-\d{4}" class="masked">
+</li>
+<li>
+  <label for="cc">Credit Card Number</label>
+  <input id="cc" type="tel" name="ccnumber" placeholder="XXXX XXXX XXXX XXXX" pattern="\d{4} \d{4} \d{4} \d{4}" class="masked">
+</li>
+</ul>
+
+<script src="js/js.js"></script>
+
+</body>
+</html>

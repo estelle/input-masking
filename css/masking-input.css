@@ -1,0 +1,33 @@
+li {
+  line-height: 2;
+  //background-color: red;
+}
+.shell {
+  position: relative;
+  line-height: 1;
+}
+.shell span {
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  color: #ccc;
+  pointer-events: none;
+  z-index: -1;
+}
+.shell span i {
+  color: transparent;
+}
+.shell span.inactive {
+  display: none;
+}
+input,
+span {
+  font-size: 16px;
+  font-family: monospace;
+  padding-right: 10px;
+  background-color: transparent;
+  text-transform: uppercase;
+}
+:invalid {
+  outline: 1px solid red;
+}
