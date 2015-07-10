@@ -8,6 +8,9 @@ Input Masking
 The user can enter letters and numbers. All other characters, like spaces, dashes, and parenthesis are automatically added by the script, making data entery easier when using dynamic keypads.
 
 
+## Example
+
+<http://estelle.github.io/input-masking>
 
 ## Quick Start
 
