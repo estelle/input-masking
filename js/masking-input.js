@@ -56,6 +56,7 @@ var masking = {
         }, false); 
       } else if (masking.maskedInputs[i].attachEvent) { // For IE 8
           masking.maskedInputs[i].attachEvent("onkeyup", function(e) {
+            e.target = e.srcElement; 
           masking.handleValueChange(e);
         });
       }
