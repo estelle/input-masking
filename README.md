@@ -46,6 +46,14 @@ If the digits allowed by your regular expression are constrained or complicated,
     	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" 
     	data-valid-example="05/18"> 
 	
+## Accessibility
+
+There are accessibility features baked into the examples that you must maintain to maintain accessibility.
+
+* Always include a label for each form control, and associate the form control either implicitly by nesting it, or explicitly with the `for` and `id` attributes.
+* Always include a `title` attribute that describes the expected pattern when including the `pattern` attribute.
+* Always use the best input `type` for the job, so dynamic touchpad users get the right touchpad for the job. Generally this will always be `type="tel"`, as most masking is for digits only. However, when alphanumeric characters are required, use `type="text"`. And, while I've included an expiration month to show an example of using complex regular expressions, use `type="month"` instead of this script.
+
 
 ## Browser Support
 
@@ -90,21 +98,26 @@ Handles these test cases:
 
 ## Exceptions
 
-Complex Regular Expressions
-If the digits allowed by your regular expression are constrained or complicated, such as months only allowing 01-12, include a made up `data-valid-example` attribute that takes as its value a valid value that would match the pattern.
+####Complex Regular Expressions
+If the digits allowed by your regular expression are constrained or complicated, such as months only allowing 01-12, include a made up `data-valid-example` attribute that takes as its value a **valid** value that would match the pattern.
 
 	<label for="expiration"> Credit Card Expiration </label>
     <input id="expiration" type="tel" placeholder="MM/YY" class="masked" 
     	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" 
-    	data-valid-example="05/18"> 
+    	data-valid-example="11/18"
+    	title="2-digit month and 2-digit year greater than 01/15"> 
     	
-I've taken care of MM in `masking.validateProgress()`, because that is common. But if you have other exceptions, you may need to add other exceptions there.
+I've taken care of MM in `masking.validateProgress()`, because that is common. If you have  exceptions, add the exceptions there. If you need an expiration month, it is best to use `<input type="month">` instead.
 
-## Contributions
+## Contributors
 
 [Estelle Weyl](http://twitter.com/estellevw). 
 
 ## License
 
 This code is available under the [MIT license](LICENSE)
+
+## Thanks
+
+Thanks to @[stevefaulkner](https://twitter.com/stevefaulkner)
 

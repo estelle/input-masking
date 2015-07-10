@@ -105,8 +105,7 @@ var masking = {
                 newValue += strippedValue[j++];
 
           } else if ((!isCharsetPresent && !isInt && matchesNumber) || (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))) {
-
-                masking.errorOnKeyEntry(placeholder[i], strippedValue[j]);
+                // masking.errorOnKeyEntry(); // write your own error handling function
                 return newValue; 
 
         } else {
@@ -130,8 +129,11 @@ var masking = {
         l = value.length, testValue = '';
 
     //convert to months
-    if (l == 1 && value < 10 && placeholder.toUpperCase().substr(0,2) == 'MM') {
-      value = '0' + value;
+    if (l == 1 && placeholder.toUpperCase().substr(0,2) == 'MM') {
+      if(value > 1 && value < 10) {
+        value = '0' + value;
+      }
+      return value;
     }
     // test the value, removing the last character, until what you have is a submatch
     for ( i = l; i >= 0; i--) {
@@ -146,11 +148,8 @@ var masking = {
     return value;
   },
 
-  errorOnKeyEntry : function (expected, actual) {
-    // this is a temp function. 
-    // Please write your own error handling
-    var action = (expected == masking.maskedLetter) ? 'letter' : 'number';
-    console.log('You entered ' + actual + ' when a ' + action + ' was expected');
+  errorOnKeyEntry : function () {
+    // Write your own error handling
   }
 }
 
