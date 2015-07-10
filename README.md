@@ -51,8 +51,9 @@ If the digits allowed by your regular expression are constrained or complicated,
 * Chrome
 * Firefox
 * Opera
+* IE 9
 
-I am working on making it work in IE8 thru 10. Used JS that was a bit too modern I think. My virtualbox is sad today, but I'll work on it tomorrow. 
+I am working on making it work in IE8. Event handler issue. Should be resolved soon.
 
 ## Customization
 
