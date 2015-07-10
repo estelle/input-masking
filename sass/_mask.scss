@@ -1,0 +1,27 @@
+.shell {
+  position: relative;
+  line-height: 1;
+  span {
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  color: #ccc;
+  pointer-events: none;
+  z-index: -1;
+    i {
+        color: transparent;
+    }
+    &.inactive {
+        display: none;
+    }
+  }
+}
+
+input.masked,
+.shell span {
+  font-size: 16px;
+  font-family: monospace;
+  padding-right: 10px;
+  background-color: transparent;
+  text-transform: uppercase;
+}

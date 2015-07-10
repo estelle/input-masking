@@ -1,36 +1,14 @@
-/* 
-
-INSTRUCTIONS
---------------------------------
-
-example: 
-<input id="expiration" type="tel" placeholder="MM/YY" class="masked" pattern="(1[0-2]|0\d)\/(1[5-9]|2\d)" data-valid-example="05/18">
-<input id="zip" type="tel"  placeholder="XXXXX" pattern="\d{5}" class="masked">
-<input id="zipcanada" type="tel"  placeholder="XXX XXX" pattern="\d\w\d \w\d\w" class="masked" data-charset="X_X _X_">
-
-Input attributes
-----------------
-id - required.
-type - optional. useful for correct keyboard
-name - optional. needed if submitting via post or get
-pattern - optional. Used for validation
-placeholder - required. used for laying out the value
-class='masked' - required for masking. if you change name, change js.
-data-charset - needed if non-digits are allowed
-data-valid-example - needed for validation in cases of complex patterns
-
-*/
-
-
 var masking = {
 
-  // change class name, special characters and masking characters here:
-  maskedInputs : document.getElementsByClassName('masked'),
+  // User defined Values
+  //maskedInputs : document.getElementsByClassName('masked'), // add with IE 8's death
+  maskedInputs : document.querySelectorAll('.masked'), // kill with IE 8's death
   maskedNumber : 'XdDmMyY9',
   maskedLetter : '_',
 
   init: function () {
     masking.setUpMasks(masking.maskedInputs);
+    masking.maskedInputs = document.querySelectorAll('.masked'); // Repopulating. Needed b/c static node list was created above.
     masking.activateMasking(masking.maskedInputs);
   },
 
@@ -72,9 +50,15 @@ var masking = {
     var i, l;
 
     for (i = 0, l = inputs.length; i < l; i++) {
-      masking.maskedInputs[i].addEventListener('keyup', function(e) {
-        masking.handleValueChange(e);
-      }, false); 
+      if (masking.maskedInputs[i].addEventListener) { // remove "if" after death of IE 8
+        masking.maskedInputs[i].addEventListener('keyup', function(e) {
+          masking.handleValueChange(e);
+        }, false); 
+      } else if (masking.maskedInputs[i].attachEvent) { // For IE 8
+          masking.maskedInputs[i].attachEvent("onkeyup", function(e) {
+          masking.handleValueChange(e);
+        });
+      }
     }
   },
   
@@ -109,7 +93,8 @@ var masking = {
     strippedValue = isCharsetPresent ? value.replace(/\W/g, "") : value.replace(/\D/g, "");
 
     for (i = 0, j = 0; i < l; i++) {
-        isInt = Number.isInteger(parseInt(strippedValue[j]));
+        var x = 
+        isInt = !isNaN(parseInt(strippedValue[j]));
         isLetter = strippedValue[j] ? strippedValue[j].match(/[A-Z]/i) : false;
         matchesNumber = masking.maskedNumber.indexOf(placeholder[i]) >= 0;
         matchesLetter = masking.maskedLetter.indexOf(placeholder[i]) >= 0;
@@ -163,7 +148,7 @@ var masking = {
   errorOnKeyEntry : function (expected, actual) {
     // this is a temp function. 
     // Please write your own error handling
-    var action = expected == 'X' ? 'number' : 'letter';
+    var action = (expected == masking.maskedLetter) ? 'letter' : 'number';
     console.log('You entered ' + actual + ' when a ' + action + ' was expected');
   }
 }
