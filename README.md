@@ -75,26 +75,24 @@ Want to use something other than X in your placeholder look for masked inputs th
 
 Handles these test cases:
 
-* If the pattern starts with a special character 
-* If the next letter is a special character 
-* If the next letter is more than one special character 
-* If the browser doesn't support placeholder 
-* If the browser doesn't support pattern - doesn't matter, does it?
-* If the user deletes a letter 
-* If the user deletes a special character 
-* If the user enters a space 
-* If the user uses arrow keys 
-* If the user enters more than the allowed characters 
-* If the user has a dynamic keyboard 
-* Only uppercase letters are shown
-* If the user enters an invalid character 
-* if the user enters a special character that is already included
-* If the user is using a screen reader
-* If the user is using a touchpad
+* OK if the pattern starts with a special character 
+* OK if the next letter is a special character 
+* Can handle more than one special character 
+* Doesn't matter if browser supports placeholder attribute: appears even in IE8 
+* Doesn't matter if browser supports pattern attribute: still works
+* characters can be deleted or added mid input
+* Arrow keys can be used
+* Sets up maxlength based on placeholder length
+* Only uppercase letters are shown (this can be changed)
+* If user enters an invalid character, character deleted 
+* Enters special characters automagically
+* No unwanted characters are read by screen reader
+* Supports keyboard, mouse and touchpad
 * If the user leaves the input
-* If the user leaves the input and comes back
+* Works if the user leaves the input and comes back 
 * If user gives focus before a special character, jumps forward if typed in.
-* Value matches regular expression
+* Matches simple regular expressions
+* Can be made to match complex regular expression
 
 ## Exceptions
 
