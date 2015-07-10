@@ -26,7 +26,7 @@ Add inputs with `id`, `placeholder` and `pattern` attributes with the class of `
 
 	 <label for="zip">Zip Code</label>
   	 <input id="zip" type="tel" placeholder="XXXXX" pattern="\d{5}" 
-  	     class="masked" name="uszipcode"> 
+  	     class="masked" name="uszipcode" title="5-digit zip code"> 
 
 If your placeholder includes non-digits and non-letters, no worries. They'll be added by the script. Your mobile users won't have to change their touch keyboards. They simply need to enter letters. 
 
@@ -35,7 +35,9 @@ Do make sure that your placeholder would match the regular expression of your pa
 If your regular expressions include letters, you must include the made up `data-charset` attribute. Similar to the pattern, include an `X` for each number and an underscore `_` for each required letter.
 
 	<label for="zipca">Canadian Zip Code</label>
-  	<input  data-charset="X_X _X_" id="zipca" type="tel" name="zipcodeca" placeholder="XXX XXX" pattern="\d\w\d \w\d\w" class="masked">
+  	<input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked" 
+  		data-charset="_X_ X_X" id="zipca" type="text" name="zipcodeca" 
+  	    title="6-character alphanumeric zip code in the format of A1A 1A1">
   	
 If the digits allowed by your regular expression are constrained or complicated, such as months only allowing 01-12, include a made up `data-valid-example` attribute that takes as its value a valid value that would match the pattern.
 
@@ -51,9 +53,7 @@ If the digits allowed by your regular expression are constrained or complicated,
 * Chrome
 * Firefox
 * Opera
-* IE 9
-
-I am working on making it work in IE8. Event handler issue. Should be resolved soon.
+* IE 8
 
 ## Customization
 
@@ -62,6 +62,7 @@ Don't like the class masked? Make up your own, and change the class in the CSS a
 Want to use something other than X? right now the script handles XdDmMyY9 for numeric placeholding. MM/YY and mm/yy will work fine. Want to use something else, simply change the variable `maskedNumber` value in the JS
 
 Want to use something other than X in your placeholder look for masked inputs that require both letters and numbers, you can. You can put different characters in your placeholder, as long as your `data-charset` contains Xs and _ only. If you require _ as a special character in your mask? Simply change the variable `maskedLetter` and in the JS, and also the value of `data-charset` in your HTML
+
 ## Documentation
 
 Handles these test cases:
@@ -101,7 +102,7 @@ I've taken care of MM in `masking.validateProgress()`, because that is common. B
 
 ## Contributions
 
-Thus far this was written by Estelle Weyl. Contribute, test, help with accessibility and you can get delicious credit for being awesome.
+[Estelle Weyl](http://twitter.com/estellevw). 
 
 ## License
 
