@@ -44,10 +44,10 @@ If the digits allowed by your regular expression are constrained or complicated,
 
 ## Browser Support
 
-Safari
-Chrome
-Firefox
-Opera
+* Safari
+* Chrome
+* Firefox
+* Opera
 
 I am working on making it work in IE8 thru 10. Used JS that was a bit too modern I think. My virtualbox is sad today, but I'll work on it tomorrow. 
 
