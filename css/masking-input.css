@@ -16,9 +16,10 @@ li {
     pointer-events: none;
     z-index: -1; }
     .shell span i {
-      color: transparent; }
-    .shell span.inactive {
-      display: none; }
+      /* any of these 3 will work */
+      color: transparent;
+      opacity: 0;
+      visibility: hidden; }
 
 input.masked,
 .shell span {

@@ -8,11 +8,10 @@
   color: #ccc;
   pointer-events: none;
   z-index: -1;
-    i {
+    i { /* any of these 3 will work */
         color: transparent;
-    }
-    &.inactive {
-        display: none;
+        opacity: 0;
+        visibility: hidden;
     }
   }
 }

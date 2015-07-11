@@ -3,13 +3,20 @@
 <head>
   <title>Masking</title>
   <link rel="stylesheet" href="css/masking-input.css"/>
+  <style>
+  /* additional styles */
+  li {line-height: 2; clear: both;}
+  label {display: inline-block; width: 200px;}
+  .shell span {color: pink;}
+  li {font-family: helvetica; font-size: 0.93rem;}
+  </style>
 </head>
 <body>
 
 <ul>
   <li>
     <label for="expiration">Credit Card Expiration Month</label>
-    <input id="expiration" type="tel" placeholder="MM/YY" class="masked" pattern="(1[0-2]|0[1-9])\/\d\d)" data-valid-example="11/18" title="2-digit month and 2-digit year greater than 01/15">
+    <input id="expiration" type="tel" placeholder="MM/YY" class="masked" pattern="(1[0-2]|0[1-9])\/\d\d" data-valid-example="11/18" title="2-digit month and 2-digit year greater than 01/15">
   </li>
 
 <li>
