@@ -107,6 +107,10 @@ If the digits allowed by your regular expression are constrained or complicated,
     	
 I've taken care of MM in `masking.validateProgress()`, because that is common. If you have  exceptions, add the exceptions there. If you need an expiration month, it is best to use `<input type="month">` instead.
 
+## Notes
+
+As the *pattern* attribute is being used, you may want to add via javascript the *novalidate* attribute on any ancestor `form` or form control to disable native browser validation. Do add it via JS, because if the JS fails, native validation is a good alternative. 
+
 ## Contributors
 
 [Estelle Weyl](http://twitter.com/estellevw). 
