@@ -1,41 +1,73 @@
 var masking = {
 
-  // User defined Values
-  //maskedInputs : document.getElementsByClassName('masked'), // add with IE 8's death
-  maskedInputs : document.querySelectorAll('.masked'), // kill with IE 8's death
-  maskedNumber : 'XdDmMyY9',
-  maskedLetter : '_',
-
-  init: function () {
-    masking.setUpMasks(masking.maskedInputs);
-    masking.maskedInputs = document.querySelectorAll('.masked'); // Repopulating. Needed b/c static node list was created above.
-    masking.activateMasking(masking.maskedInputs);
+  // Default Values
+  defaults: {
+    masked : '.masked',
+    maskedNumber : 'XdDmMyY9',
+    maskedLetter : '_',
+    error: function(){}
   },
 
-  setUpMasks: function (inputs) {
-    var i, l = inputs.length;
+  init: function ( options ) {
+    if ( options && options.masked ) {
+      // Make it easy to wrap this plugin and pass elements instead of a selector
+      options.masked = typeof options.masked === string ? document.querySelectorAll( options.masked ) : options.masked;
+    }
 
-    for(i = 0; i < l; i++) {
-      masking.createShell(inputs[i]);
+    if ( options ) {
+      this.options = {
+        masked: options.masked || document.querySelectorAll( this.defaults.masked ),
+        maskedNumber: options.maskedNumber || this.defaults.maskedNumber,
+        maskedLetter: options.maskedLetter || this.defaults.maskedLetter,
+        error: options.onError || this.defaults.onError
+      }
+    } else {
+      this.options = this.defaults;
+      this.options.masked = document.querySelectorAll( this.options.masked );
+    }
+
+    this.refresh( true );
+  },
+
+  refresh: function( init ) {
+    var input, parentClass;
+
+    if ( !init ) {
+      this.options.masked = document.querySelectorAll( this.options.masked );
+    }
+
+    for(i = 0; i < this.options.masked.length; i++) {
+      input = this.options.masked[i]
+      parentClass = input.parentNode.getAttribute('class');
+
+      if ( !parentClass || ( parentClass && parentClass.indexOf( 'shell' ) === -1 ) ) {
+        this.createShell(input);
+        this.activateMasking(input);
+      }
     }
   },
   
   // replaces each masked input with a shall containing the input and it's mask.
   createShell : function (input) {
-    var text = '', 
-        placeholder = input.getAttribute('placeholder');
+    var wrap = document.createElement('span'),
+        mask = document.createElement('span'),
+        emphasis = document.createElement('i'),
+        placeholderText = input.getAttribute('placeholder'),
+        placeholder = document.createTextNode(placeholderText);
 
     input.setAttribute('maxlength', placeholder.length);
-    input.setAttribute('data-placeholder', placeholder);
+    input.setAttribute('data-placeholder', placeholderText);
     input.removeAttribute('placeholder');
 
-    text = '<span class="shell">' +
-      '<span aria-hidden="true" id="' + input.id + 
-      'Mask"><i></i>' + placeholder + '</span>' + 
-      input.outerHTML +
-      '</span>';
+    mask.setAttribute('aria-hidden', 'true');
+    mask.setAttribute('id', input.getAttribute('id') + 'Mask');
+    mask.appendChild(emphasis);
+    mask.appendChild(placeholder);
 
-    input.outerHTML = text;
+    wrap.setAttribute('class', 'shell');
+    wrap.appendChild(mask);
+    input.parentNode.insertBefore( wrap, input );
+    wrap.appendChild(input);
   },
 
   setValueOfMask : function (e) {
@@ -46,20 +78,15 @@ var masking = {
   },
   
   // add event listeners
-  activateMasking : function (inputs) {
-    var i, l;
-
-    for (i = 0, l = inputs.length; i < l; i++) {
-      if (masking.maskedInputs[i].addEventListener) { // remove "if" after death of IE 8
-        masking.maskedInputs[i].addEventListener('keyup', function(e) {
-          masking.handleValueChange(e);
-        }, false); 
-      } else if (masking.maskedInputs[i].attachEvent) { // For IE 8
-          masking.maskedInputs[i].attachEvent("onkeyup", function(e) {
-          e.target = e.srcElement; 
-          masking.handleValueChange(e);
-        });
-      }
+  activateMasking : function (input) {
+    var that = this;
+    if (input.addEventListener) { // remove "if" after death of IE 8
+      input.addEventListener('keyup', this.handleValueChange, false);
+    } else if (input.attachEvent) { // For IE 8
+        input.attachEvent("onkeyup", function(e) {
+        e.target = e.srcElement;
+        that.handleValueChange(e);
+      });
     }
   },
   
@@ -94,20 +121,15 @@ var masking = {
     strippedValue = isCharsetPresent ? value.replace(/\W/g, "") : value.replace(/\D/g, "");
 
     for (i = 0, j = 0; i < l; i++) {
-        var x = 
         isInt = !isNaN(parseInt(strippedValue[j]));
         isLetter = strippedValue[j] ? strippedValue[j].match(/[A-Z]/i) : false;
-        matchesNumber = masking.maskedNumber.indexOf(placeholder[i]) >= 0;
-        matchesLetter = masking.maskedLetter.indexOf(placeholder[i]) >= 0;
-
+        matchesNumber = this.options.maskedNumber.indexOf(placeholder[i]) >= 0;
+        matchesLetter = this.options.maskedLetter.indexOf(placeholder[i]) >= 0;
         if ((matchesNumber && isInt) || (isCharsetPresent && matchesLetter && isLetter)) {
-
                 newValue += strippedValue[j++];
-
           } else if ((!isCharsetPresent && !isInt && matchesNumber) || (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))) {
-                // masking.errorOnKeyEntry(); // write your own error handling function
-                return newValue; 
-
+                this.options.onError( e ); // write your own error handling function
+                return newValue;
         } else {
             newValue += placeholder[i];
         } 
@@ -117,7 +139,7 @@ var masking = {
         }
     }
     if (e.target.getAttribute('data-valid-example')) {
-      return masking.validateProgress(e, newValue);
+      return this.validateProgress(e, newValue);
     }
     return newValue;
   },
@@ -146,11 +168,15 @@ var masking = {
     }
   
     return value;
-  },
-
-  errorOnKeyEntry : function () {
-    // Write your own error handling
   }
-}
+};
 
-masking.init();
+//  Declaritive initalization
+(function(){
+  var scripts = document.getElementsByTagName( "script" ),
+      script = scripts[ scripts.length - 1 ];
+  if ( script.getAttribute( "data-autoinit" ) ) {
+    masking.init();
+  }
+})();
+
