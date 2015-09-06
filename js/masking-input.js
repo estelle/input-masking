@@ -46,7 +46,7 @@ var masking = {
       }
     }
   },
-  
+
   // replaces each masked input with a shall containing the input and it's mask.
   createShell : function (input) {
     var wrap = document.createElement('span'),
@@ -76,7 +76,7 @@ var masking = {
 
     return "<i>" + value + "</i>" + placeholder.substr(value.length);
   },
-  
+
   // add event listeners
   activateMasking : function (input) {
     var that = this;
@@ -89,10 +89,10 @@ var masking = {
       });
     }
   },
-  
+
   handleValueChange : function (e) {
     var id = e.target.getAttribute('id');
-        
+
     switch (e.keyCode) { // allows navigating thru input
       case 20: // caplocks
       case 17: // control
@@ -112,9 +112,9 @@ var masking = {
   },
 
   handleCurrentValue : function (e) {
-    var isCharsetPresent = e.target.getAttribute('data-charset'), 
+    var isCharsetPresent = e.target.getAttribute('data-charset'),
         placeholder = isCharsetPresent || e.target.getAttribute('data-placeholder'),
-        value = e.target.value, l = placeholder.length, newValue = '', 
+        value = e.target.value, l = placeholder.length, newValue = '',
         i, j, isInt, isLetter, strippedValue;
 
     // strip special characters
@@ -132,9 +132,9 @@ var masking = {
                 return newValue;
         } else {
             newValue += placeholder[i];
-        } 
+        }
         // break if no characters left and the pattern is non-special character
-        if (strippedValue[j] == undefined) { 
+        if (strippedValue[j] == undefined) {
           break;
         }
     }
@@ -166,16 +166,16 @@ var masking = {
         value = value.substr(0, value.length-1);
       }
     }
-  
+
     return value;
   }
 };
 
 //  Declaritive initalization
 (function(){
-  var scripts = document.getElementsByTagName( "script" ),
+  var scripts = document.getElementsByTagName('script'),
       script = scripts[ scripts.length - 1 ];
-  if ( script.getAttribute( "data-autoinit" ) ) {
+  if ( script.getAttribute('data-autoinit') ) {
     masking.init();
   }
 })();
