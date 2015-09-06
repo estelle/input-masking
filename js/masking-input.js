@@ -52,12 +52,18 @@ var masking = {
     var wrap = document.createElement('span'),
         mask = document.createElement('span'),
         emphasis = document.createElement('i'),
+        inputClass = input.getAttribute('class'),
         placeholderText = input.getAttribute('placeholder'),
         placeholder = document.createTextNode(placeholderText);
 
     input.setAttribute('maxlength', placeholder.length);
     input.setAttribute('data-placeholder', placeholderText);
     input.removeAttribute('placeholder');
+
+
+    if ( !inputClass || ( inputClass && inputClass.indexOf('masked') === -1 ) ) {
+      input.setAttribute( 'class', inputClass + ' masked');
+    }
 
     mask.setAttribute('aria-hidden', 'true');
     mask.setAttribute('id', input.getAttribute('id') + 'Mask');
