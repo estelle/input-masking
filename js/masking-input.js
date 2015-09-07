@@ -5,6 +5,7 @@ var masking = {
     masked : '.masked',
     maskedNumber : 'XdDmMyY9',
     maskedLetter : '_',
+    noValidate: '',
     error: function(){}
   },
 
@@ -29,7 +30,7 @@ var masking = {
     this.refresh( true );
   },
 
-  refresh: function( init ) {
+  refresh: function(init) {
     var input, parentClass;
 
     if ( !init ) {
@@ -40,11 +41,39 @@ var masking = {
       input = this.options.masked[i]
       parentClass = input.parentNode.getAttribute('class');
 
-      if ( !parentClass || ( parentClass && parentClass.indexOf( 'shell' ) === -1 ) ) {
+      if ( !parentClass || ( parentClass && parentClass.indexOf('shell') === -1 ) ) {
         this.createShell(input);
+        if ( this.options.noValidate ) {
+          this.noValidateSetup(input);
+        }
         this.activateMasking(input);
       }
     }
+  },
+
+  noValidate: function(input) {
+    this.getForm( input ).setAttribute('noValidate',true);
+  },
+
+  // Remove when IE8 dies
+  getForm: function(input) {
+
+    // Support: IE8 Only
+    // IE8 does not support the form attribute and when it is supplied. It overwrites the form prop
+    // with a string, so we need to find the proper form.
+    return typeof input.form === "string" ?  this.closestForm( input ): input.form;
+
+  },
+
+  // Remove when IE8 dies
+  closestForm: function(input) {
+    var parent = input.parentNode;
+    for (;parent.parentNode; parent = parent.parentNode) {
+      if(parent.tagName.toUpperCase() === 'form') {
+        return parent;
+      }
+    }
+    return document.body;
   },
 
   // replaces each masked input with a shall containing the input and it's mask.
