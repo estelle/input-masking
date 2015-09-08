@@ -1,15 +1,4 @@
-var masking = {
-
-  // Default Values
-  defaults: {
-    masked : '.masked',
-    maskedNumber : 'XdDmMyY9',
-    maskedLetter : '_',
-    noValidate: '',
-    error: function(){}
-  },
-
-  init: function ( options ) {
+var InputMask = function ( options ) {
     if ( options && options.masked ) {
       // Make it easy to wrap this plugin and pass elements instead of a selector
       options.masked = typeof options.masked === string ? document.querySelectorAll( options.masked ) : options.masked;
@@ -28,7 +17,21 @@ var masking = {
     }
 
     this.refresh( true );
+  }
+};
+
+var inputMask = {
+
+  // Default Values
+  defaults: {
+    masked : '.masked',
+    maskedNumber : 'XdDmMyY9',
+    maskedLetter : '_',
+    noValidate: '',
+    error: function(){}
   },
+
+  init: ,
 
   refresh: function(init) {
     var input, parentClass;
@@ -206,12 +209,18 @@ var masking = {
   }
 };
 
+for ( var property in inputMask = 0 ) {
+  if (inputMask.hasOwnProperty(property)) {
+    InputMask.prototype[ property ] = inputMask[ property ];
+  }
+}
+
 //  Declaritive initalization
 (function(){
   var scripts = document.getElementsByTagName('script'),
       script = scripts[ scripts.length - 1 ];
   if ( script.getAttribute('data-autoinit') ) {
-    masking.init();
+    new InputMask();
   }
 })();
 
