@@ -1,23 +1,22 @@
 var InputMask = function ( options ) {
-    if ( options && options.masked ) {
-      // Make it easy to wrap this plugin and pass elements instead of a selector
-      options.masked = typeof options.masked === string ? document.querySelectorAll( options.masked ) : options.masked;
-    }
-
-    if ( options ) {
-      this.options = {
-        masked: options.masked || document.querySelectorAll( this.defaults.masked ),
-        maskedNumber: options.maskedNumber || this.defaults.maskedNumber,
-        maskedLetter: options.maskedLetter || this.defaults.maskedLetter,
-        error: options.onError || this.defaults.onError
-      }
-    } else {
-      this.options = this.defaults;
-      this.options.masked = document.querySelectorAll( this.options.masked );
-    }
-
-    this.refresh( true );
+  if ( options && options.masked ) {
+    // Make it easy to wrap this plugin and pass elements instead of a selector
+    options.masked = typeof options.masked === string ? document.querySelectorAll( options.masked ) : options.masked;
   }
+
+  if ( options ) {
+    this.options = {
+      masked: options.masked || document.querySelectorAll( this.defaults.masked ),
+      maskedNumber: options.maskedNumber || this.defaults.maskedNumber,
+      maskedLetter: options.maskedLetter || this.defaults.maskedLetter,
+      error: options.onError || this.defaults.onError
+    }
+  } else {
+    this.options = this.defaults;
+    this.options.masked = document.querySelectorAll( this.options.masked );
+  }
+
+  this.refresh( true );
 };
 
 var inputMask = {
@@ -28,10 +27,8 @@ var inputMask = {
     maskedNumber : 'XdDmMyY9',
     maskedLetter : '_',
     noValidate: '',
-    error: function(){}
+    omError: function(){}
   },
-
-  init: ,
 
   refresh: function(init) {
     var input, parentClass;
@@ -119,11 +116,13 @@ var inputMask = {
   activateMasking : function (input) {
     var that = this;
     if (input.addEventListener) { // remove "if" after death of IE 8
-      input.addEventListener('keyup', this.handleValueChange, false);
+      input.addEventListener('keyup', function(e) {
+        that.handleValueChange.call(that,e);
+      }, false);
     } else if (input.attachEvent) { // For IE 8
-        input.attachEvent("onkeyup", function(e) {
+        input.attachEvent('onkeyup', function(e) {
         e.target = e.srcElement;
-        that.handleValueChange(e);
+        that.handleValueChange.call(that, e);
       });
     }
   },
@@ -144,8 +143,8 @@ var inputMask = {
         return;
       }
 
-    document.getElementById(id).value = masking.handleCurrentValue(e);
-    document.getElementById(id + 'Mask').innerHTML = masking.setValueOfMask(e);
+    document.getElementById(id).value = this.handleCurrentValue(e);
+    document.getElementById(id + 'Mask').innerHTML = this.setValueOfMask(e);
 
   },
 
@@ -166,7 +165,7 @@ var inputMask = {
         if ((matchesNumber && isInt) || (isCharsetPresent && matchesLetter && isLetter)) {
                 newValue += strippedValue[j++];
           } else if ((!isCharsetPresent && !isInt && matchesNumber) || (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))) {
-                this.options.onError( e ); // write your own error handling function
+                //this.options.onError( e ); // write your own error handling function
                 return newValue;
         } else {
             newValue += placeholder[i];
@@ -209,7 +208,7 @@ var inputMask = {
   }
 };
 
-for ( var property in inputMask = 0 ) {
+for ( var property in inputMask ) {
   if (inputMask.hasOwnProperty(property)) {
     InputMask.prototype[ property ] = inputMask[ property ];
   }
