@@ -82,7 +82,7 @@ If you are ok with all the default options you can have masked-inputs initalize 
 Alternativly if you need to pass custom options or want to initalize the script your self you can do so like this
 
 ```js
-masking.init( */options*/ );
+new InputMask( */options*/ );
 ```
 
 ### Options
@@ -91,12 +91,12 @@ Don't like the class `masked` for a selector? Pass an options object instead and
 
 ```js
 // Selector
-masking.init({
+new InputMask({
   masked: ".custom-selector"
 });
 
 // Node List
-masking.init({
+new InputMask({
   masked: nodeList
 });
 ```
@@ -106,7 +106,7 @@ Want to use something other than X? right now the script handles XdDmMyY9 for nu
 
 ```js
 // Selector
-masking.init({
+new InputMask({
   number: 'XZdDmMyY9'
 });
 ```
@@ -115,7 +115,7 @@ masking.init({
 Want to use something other than X in your placeholder look for masked inputs that require both letters and numbers, you can. You can put different characters in your placeholder, as long as your `data-charset` contains Xs and _ only. If you require _ as a special character in your mask? Simply pass an options object setting the `letter` option, and also the value of `data-charset` in your HTML.
 
 ```js
-masking.init({
+new InputMask({
   letter: '?'
 });
 ```
@@ -129,10 +129,21 @@ masking.init({
 #### onError
 Want to add error handling? Simply pass a function to the `onError` option. The function will recieve the keyboard event as the first paramater.
 ```js
-masking.init({
+new InputMask({
   onError: function( e ) {
     // Handle your errors!
   }
+});
+```
+#### noValidate
+
+As the *pattern* attribute is being used, you may want to add via javascript the *novalidate* attribute on any ancestor `form` or form control to disable native browser validation. Do add it via JS, because if the JS fails, native validation is a good alternative.
+
+You can have input masking do this for you by setting the `noValidate` option to true.
+
+```js
+new InputMask({
+  noValidate: true
 });
 ```
 
@@ -173,10 +184,6 @@ If the digits allowed by your regular expression are constrained or complicated,
 ```
 
 I've taken care of MM in `masking.validateProgress()`, because that is common. If you have  exceptions, add the exceptions there. If you need an expiration month, it is best to use `<input type="month">` instead.
-
-## Notes
-
-As the *pattern* attribute is being used, you may want to add via javascript the *novalidate* attribute on any ancestor `form` or form control to disable native browser validation. Do add it via JS, because if the JS fails, native validation is a good alternative. 
 
 ## Contributors
 
