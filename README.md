@@ -112,7 +112,15 @@ new InputMask({
 ```
 
 #### letter
-Want to use something other than X in your placeholder look for masked inputs that require both letters and numbers, you can. You can put different characters in your placeholder, as long as your `data-charset` contains Xs and _ only. If you require _ as a special character in your mask? Simply pass an options object setting the `letter` option, and also the value of `data-charset` in your HTML.
+Want to use something other than X in your placeholder look for masked inputs that require both letters and numbers, you can. You can put different characters in your placeholder, as long as your `data-charset` contains Xs and _ only.
+
+```html
+<input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked" 
+      data-charset="?X? X?X" id="zipca" type="text" name="canadianzip" 
+        title="6-character alphanumeric code in the format of A1A 1A1">
+```
+
+If you require _ as a special character in your mask? Simply pass an options object setting the `letter` option, and also the value of `data-charset` in your HTML.
 
 ```js
 new InputMask({
@@ -121,8 +129,8 @@ new InputMask({
 ```
 
 ```html
-<input placeholder="XXX_XXX" pattern="\w\d\w \d\w\d" class="masked" 
-      data-charset="?X? X?X" id="zipca" type="text" name="custom code with underscore" 
+<input placeholder="XXX_XXX" pattern="\w\d\w\_\d\w\d" class="masked" 
+      data-charset="?X?_X?X" id="underscore" type="text" name="underscoredstring" 
         title="6-character alphanumeric code in the format of A1A_1A1">
 ```
 
@@ -164,7 +172,6 @@ Handles these test cases:
 * Enters special characters automagically
 * No unwanted characters are read by screen reader
 * Supports keyboard, mouse and touchpad
-* If the user leaves the input
 * Works if the user leaves the input and comes back 
 * If user gives focus before a special character, jumps forward if typed in.
 * Matches simple regular expressions
