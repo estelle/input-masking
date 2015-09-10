@@ -188,6 +188,7 @@ I've taken care of MM in `masking.validateProgress()`, because that is common. I
 ## Contributors
 
 [Estelle Weyl](http://twitter.com/estellevw). 
+[Alex Schmitz](http://twitter.com/alexrschmitz).
 
 ## License
 
