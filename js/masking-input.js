@@ -27,7 +27,7 @@ var inputMask = {
     maskedNumber : 'XdDmMyY9',
     maskedLetter : '_',
     noValidate: '',
-    omError: function(){}
+    onError: function(){}
   },
 
   refresh: function(init) {
