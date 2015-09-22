@@ -141,6 +141,10 @@ var inputMask = {
       case 40:
       case  9: // tab (let blur handle tab)
         return;
+      case 91: // control key
+        if(e.target.value == document.querySelector('#' + id + 'Mask i').innerHTML) {
+          return; // Continue only if value hasn't changed
+        }
       }
 
     document.getElementById(id).value = this.handleCurrentValue(e);
