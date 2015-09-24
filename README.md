@@ -194,16 +194,16 @@ I've taken care of MM in `masking.validateProgress()`, because that is common. I
 
 ## ReactJS version
 
----javascript
-var React = require('react'),
-	MaskedInput = require('../index');
+```html
+	var React = require('react'),
+		MaskedInput = require('../index');
 
-window.onload = function () {
-    React.render(
-      <ul>
-        <li>
-          <label htmlFor="month">Month</label>
-          <MaskedInput 
+	window.onload = function () {
+    	React.render(
+	 <ul>
+           <li>
+	    <label htmlFor="month">Month</label>
+            <MaskedInput 
             id="month" 
             type="tel" 
             placeholder="MM/YY"
@@ -224,7 +224,7 @@ window.onload = function () {
         </ul>,
         document.getElementById('component')
     );
-};
+  };
 ```
 
 ## Contributors
