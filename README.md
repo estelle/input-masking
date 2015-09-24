@@ -192,6 +192,41 @@ If the digits allowed by your regular expression are constrained or complicated,
 
 I've taken care of MM in `masking.validateProgress()`, because that is common. If you have  exceptions, add the exceptions there. If you need an expiration month, it is best to use `<input type="month">` instead.
 
+## ReactJS version
+
+---javascript
+var React = require('react'),
+	MaskedInput = require('../index');
+
+window.onload = function () {
+    React.render(
+      <ul>
+        <li>
+          <label htmlFor="month">Month</label>
+          <MaskedInput 
+            id="month" 
+            type="tel" 
+            placeholder="MM/YY"
+            pattern="(1[0-2]|0[1-9])\/\d\d" 
+            data-valid-example="11/18"
+            title="2-digit month and 2-digit year greater than 01/15" />
+        </li>
+        <li>
+          <label htmlFor="zip">Zip Code</label>
+          <MaskedInput 
+            id="zip" 
+            type="tel" 
+            placeholder="XXXXX" 
+            pattern="\d{5}" 
+            required
+            title="5-digit zip code" />
+        </li>      
+        </ul>,
+        document.getElementById('component')
+    );
+};
+```
+
 ## Contributors
 
 [Estelle Weyl](http://twitter.com/estellevw). 
