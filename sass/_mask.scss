@@ -8,7 +8,9 @@
   color: #ccc;
   pointer-events: none;
   z-index: -1;
-    i { /* any of these 3 will work */
+    i { 
+        font-style: normal;
+      /* any of these 3 will work */
         color: transparent;
         opacity: 0;
         visibility: hidden;

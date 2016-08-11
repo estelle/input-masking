@@ -16,6 +16,7 @@ li {
     pointer-events: none;
     z-index: -1; }
     .shell span i {
+      font-style: normal;
       /* any of these 3 will work */
       color: transparent;
       opacity: 0;
