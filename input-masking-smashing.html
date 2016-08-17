@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>Introducing SAIM: Simple Accessible Input Masking</title>
+</head>
+<body>
+  <h1>Introducing SAIM: Simple Accessible Input Masking</h1>
+
+
+<p>The <a href="https://www.w3.org/TR/html5/forms.html#attr-input-placeholder"><code>placeholder</code></a> attribute, available for &lt;textarea&gt; and several &lt;input&gt; types, provides a hint describing the expected value of a form control. For example, a developer can tell a browser to display <code>XXXXX-XXXX</code> for an input requiring a long-format American ZIP code, or <code>(XXX) XXX-XXXX</code> for an input requiring a North American-style telephone number. The placeholder attribute was introduced in HTML5 and has been <a href="http://caniuse.com/#search=placeholder%20attribute">supported since IE 10</a>.</p>
+
+<p>Here is an example of the placeholder attribute displayed in a text input type:</p>
+
+<p><label for="fc1">Input with Placeholder: </label><input placeholder="this is the placeholder text" id="fc1"></p>
+
+<p>By default, the placeholder appears as gray text inside an input field. The placeholder disappears when the value becomes non-empty.</p>
+
+<p>Because of the inability to easily style the placeholder and because it disappears on data entry, designers and developers have been asking for a permanent, styleable placeholder that demarks what data the user is allowed to enter in a text box. They've been asking for "input-masking" &mdash; a string of characters representing the expected data format which updates as the user enters the value, continuously displaying a hint as to the remaining required characters. There is finally an accessible solution for this demand.</p>
+
+<h2>Accessibility &amp; Placeholder</h2>
+
+<p>Before we dive in, a note on accessibility: Do not use the <code>placeholder</code> attribute as a replacement for a &lt;label&gt;, as doing so reduces the accessibility and usability of the form control. While the label is shown at all times, the placeholder is only shown before the user enters a value.</p>
+
+<p>The placeholder is not an alternative for &lt;label&gt; nor for the <code>title</code> attribute.</p>
+
+<p>For each text field, checkbox, radio button, and drop-down menu, always include an associated &lt;label&gt; describing its purpose. Associating a &lt;label&gt; with each form control improves accessibility by both providing a large, clickable area for mouse users to access the form control, and by ensuring assistive technologies (AT) correctly inform the user of the purpose of a focused form control. The hint given by the label is always read by AT, unless ARIA attributes provide alternatives.</p>
+
+<p>When requiring input data to match a specific pattern, ALWAYS include a <code>title</code> attribute describing the expected pattern.</p>
+
+<h2>Watermarks: JavaScript Precursor for Placeholder</h2>
+
+<p>Prior to the <code>placeholder</code> being added to the HTML5 specification and getting browser support, there was a huge demand for a placeholder-like feature. In response, developers created a plethora of "watermark" and placeholder polyfills.</p>
+
+<p>Here an example of a watermarked input:<sup><a href="#fn1" id="fnref1">[1]</a></sup></p>
+
+<p><label for="fc2">Input with Watermark:</label> <input value="this is a watermark" id="fc2" onfocus="if(this.value=='this is a watermark') this.value='';"
+onblur="if(this.value=='') this.value='this is a watermark';"></p>
+
+<p>Like the plethora of watermark scripts, when the <code>placeholder</code> attribute was first supported natively in Safari 5, the placeholder text disappeared when the input field received focus. This, like the watermark, was less than optimal for usability. Autofocusing on a form control meant the placeholder text would never be seen, and the short hint &mdash; whether a watermark or HTML5 placeholder text &mdash; would never be read.</p>
+
+<p>Autofocusing itself is bad for usability, but this disappearing on focus was especially bad for keyboard users. Fortunately, native support for a placeholder which remains visible  until the value of the input is non-empty is supported in all evergreen browsers.</p>
+
+<h3>Benefits of <code>placeholder</code> attribute</h3>
+
+<p>The placeholder attribute is a native HTML5 attribute. Native, semantic HTML is by default accessible. The first rule of WAI-ARIA states, "if you can use a native HTML element or attribute with the semantics and behaviour you require already built in, instead of re-purposing an element and adding an ARIA role, state or property to make it accessible, then do so." Being native, there is no need for JavaScript in implementing placeholder. This is a huge benefit over watermarking scripts.</p>
+
+<p>The other huge benefit placeholder has over watermarks is that they  remain visible on focus, disappearing only when any character is entered into the form control. Even when a keyboard user tabs into a form control, the placeholder remains in place until the control has a value.</p>
+
+<p>This is much better than the plethora of watermark plugins, but is still less than optimal.</p>
+
+<h2>Input Masking</h2>
+
+<p>While placeholders are an improvement over watermarks, they can be improved upon with permanence and validation. UX designers want the pattern to continue to display as the user enters data, while disallowing non-conforming characters and auto-entering delimiters such as spaces, dashes and parenthesis. Some designers also desire control over placeholder appearance, which is not a feature supported in current browsers, though is accessible via the shadow DOM<sup><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+
+<p>Input masks guide the user in entering fixed width data when you want them to enter data in a specified format like postal codes, credit card numbers, and phone numbers. An input mask is a string expression defined by a developer informing the user what should be entered into a form control that should remain visible, guiding the user through  the syntax of the expected value as data is entered. Input masks can be used to define what the user is allowed to enter into the form control, setting the format to which the entered data must conform.</p>
+
+<p>A few input masking scripts have been created. Most are plugins sitting atop larger libraries or frameworks. For example, the <a href="http://robinherbots.github.io/jquery.inputmask/">jQuery.inputmask plugin</a> weighs in at 29 KB, while requiring jQuery at 37.7 KB as a dependency. The solutions that are available place the mask within the input element, as part of the value, negatively impacting accessibility. Being appended to the value, the mask produced by these scripts can not be styled differently from the value.</p>
+
+<p>A difficulty in creating input masking is the fact the input element is an empty element. As such, we can't put a span around part of a value to style just the mask.</p>
+
+<p>My goal in creating Styleable, Accessible Input Mask (SAIM) was to create a progressively enhanced input masking script that was lightweight in terms of JavaScript (and therefore bandwidth), accessible, and styleable.</p>
+
+<p>I wanted to create a framework-free (not just framework-agnostic) input mask that was reliant on the developer using semantic HTML as the base markup. By forcing semantic HTML, the form renders and is accessible immediately upon load without having to wait for the JavaScript to be downloaded, parsed and executed. SAIM is a progressive enhancement.</p>
+
+<p>The SAIM script enables you to include a mask on any input where a specific data entry format is required. The placeholder-like text remains in place, displaying which characters still need to be included. The mask is separate from the input element and can therefore be styled to any color &mdash; preferably one that differentiates the input mask text from the current value the user is entering &mdash; without requiring access to shadow DOM or any browser-specific features.</p>
+
+<p>With SAIM, the user can enter letters and numbers. Delimeters that are uniformly required &mdash; like spaces, dashes, and parenthesis &mdash; are automatically added by the SAIM script, making data entry easier when using dynamic keypads. The mask automatically updates to reflect the characters still remaining to be entered as the user progresses through data entry. SAIM prevents the user from entering invalid data.</p>
+
+<p>Here's what the script produces.</p>
+
+<object style="width: 30em; height:11em;" data="http://estelle.github.io/input-masking"></object>
+
+<p>SAIM was tested and works in Safari, Chrome, Firefox, and Opera. There is a version if you're still supporting IE 8. If you need to support anything older than IE 8, you really need to find a new job. Until you find that job, SAIM can be slightly modified for older versions of IE. If the need arises, I'll add a version to the repository. Or, feel free to fork the script and create a pull request.</p>
+
+<p>SAIM works by adding 3 nodes to the DOM for each form control having the masked class. Each masked form control is encapsulated by a mask shell containing the mask placeholder with a nested node containing a copy of the current value of the form control. This is placed before the form control in the DOM, and is made to appear directly behind the text box with a few lines of CSS. I'll explain in more detail below.</p>
+
+<h2>What the developer marks up</h2>
+
+<p>To implement SAIM, semantically mark up an HTML5 web form with labels and inputs, add the <code>.masked</code> class name to the form controls needing masking, and include the 2.69 KB script. The only difference between a regular form control and a masked control is that some HTML5 attributes are required. A masked input should include seven attributes:</p>
+<ul>
+
+<li><code>id</code>:
+
+<p>The <code>id</code> is necessary for pairing up the form control with its associated label. It is also used by the script for pairing the mask with the form control.</p></li>
+
+<li><code>class</code>:
+
+<p>The <code>class</code> attribute needs to be present and include the <code>masked</code> class or other class that matches the value listed in the JavaScript:</p>
+
+<pre><code>// Default Values
+defaults: {
+    masked : '.masked',
+    &#8230;
+},
+</code></pre></li>
+
+<li><code>pattern</code>:
+
+<p>The <code>pattern</code> defines the regular expression a value must conform to to be valid.</p></li>
+
+<li><code>placeholder</code>:
+
+<p>The <code>placeholder</code> is the placeholder or masking text.</p>
+</li>
+
+<li><code>name</code>:
+
+<p>The <code>name</code> is required if you are submitting the form, as forms pass along name/value pairs.</p>
+</li>
+<li><code>title</code>:
+
+<p>The <code>title</code> attribute, which is not officially required, is essentially required whenever the <code>pattern</code> attribute is used. The <code>title</code> should describe the requirements of the regular expression.</p>
+</li>
+<li><code>type</code>:
+
+<p>The <code>type</code> attribute defines the type of control the browser should display. If ommitted, it defaults to <code>type="text"</code>.</p>
+</li>
+</ul>
+
+
+<p>We create a label with a <code>for</code> attribute, along with an input. Include <code>type="tel"</code> when requiring numbers as it provides for a numeric keypad on devices with dynamic keypads like many smartphones, without the spinner UI that comes with the <code>number</code> input type.</p>
+
+<pre><code> &lt;label for="zip"&gt;Zip Code&lt;/label&gt;
+ 
+ &lt;input id="zip" type="tel" placeholder="XXXXX" pattern="\d{5}"
+        class="masked" name="uszipcode" title="5-digit zip code"&gt; 
+</code></pre>
+
+<p>The above should look familiar to you. It is completely semantic, accessible HTML. If you're not familiar with the above, I created a tutorial on <a href="http://estelle.github.io/forms">HTML5 input types and attributes</a>. You can also check out detailed information about <a href="http://wuffoo.com/html5/">HTML5 input types and attributes</a>.</p>
+
+
+<h2>How SAIM works</h2>
+
+<p>The required CSS (or SCSS) and JavaScript, along with an explanatory README file can be found at the <a href="https://github.com/estelle/input-masking">input masking github repository</a>.</p>
+
+<p>Include <code>masking-input.min.js</code> or <code>masking-input.ie8.min.js</code> if you need to support IE 8. The <code>auto-init</code> attribute was added to allow automatic initialization of the script.</p>
+
+
+<pre><code>&lt;script src="path/js/masking-input.min.js" data-autoinit="true"&gt;&lt;/script&gt;`
+</code></pre>
+
+<p>Add either the css file <code>masking-input.css</code> to your page, or incorporate the <code>.scss</code> component into your sass build:</p>
+
+<pre><code>&lt;link rel="stylesheet" href="path/css/masking-input.css"/&gt;
+</code></pre>
+
+<p>Add the label / input pair, as discussed above:</p>
+
+<pre><code> &lt;label for="zip"&gt;Zip Code&lt;/label&gt;
+ &lt;input id="zip" type="tel" placeholder="XXXXX" pattern="\d{5}" 
+        class="masked" name="uszipcode" title="5-digit zip code"&gt; 
+</code></pre>
+
+<p>As stated earlier, the input above is perfectly usable and valid. Even if the JavaScript fails to load, it will include a placeholder and be validated in modern browsers. If the JavaScript and CSS load correctly, you'll get your input masks.</p>
+
+<p>The SAIM script will alter the DOM by adding three nodes to the DOM for each form control having the masked class &mdash; an encapsulating mask shell, with the input prefaced by a node containing the placeholder as text, with a nested node containing a copy of the current value of the form control.</p>
+
+<p>The generated nodes will look something like this:</p>
+
+<pre><code>&lt;label for="zip"&gt;Zip Code&lt;/label&gt;
+&lt;span class="shell"&gt;
+    &lt;span aria-hidden="true" id="zipMask"&gt;&lt;i&gt;&lt;/i&gt;XXXXX&lt;/span&gt;
+    &lt;input id="zip" type="tel" name="zipcode" pattern="\d{5}" 
+    class="masked" title="5-digit zip code" maxlength="5" 
+    data-placeholder="XXXXX"&gt;
+&lt;/span&gt;
+</code></pre>
+
+<p>So, what happened?</p>
+
+<p>The input is encapsulated by a mask shell with the class of <code>shell</code>. The shell contains the mask placeholder, with a nested &lt;i&gt; containing a copy of the current value of the form control. The <code>placeholder</code> attribute name is changed to <code>data-placeholder</code> so the default placeholder ceases to display.</p>
+
+<p>That value is currently empty. If the user were to enter the numbers 4, 5, 6, 7 and 8, the &lt;i&gt;&lt;/i&gt; would be updated, as would the <code>XXXXX</code>. As data is entered, the markup is updated in the following manner:</p>
+
+<pre><code>    ... id="zipMask"&gt;&lt;i&gt;&lt;/i&gt;XXXXX&lt;/span&gt;
+    &lt;input value=""...
+    
+    ... id="zipMask"&gt;&lt;i&gt;4&lt;/i&gt;XXXX&lt;/span&gt;
+    &lt;input value="4"...
+    
+    <strong>... id="zipMask"&gt;&lt;i&gt;45&lt;/i&gt;XXX&lt;/span&gt;
+    &lt;input value="45"...</strong>
+    
+    ... id="zipMask"&gt;&lt;i&gt;456&lt;/i&gt;XX&lt;/span&gt;
+    &lt;input value="456"...
+    
+    ... id="zipMask"&gt;&lt;i&gt;4567&lt;/i&gt;X&lt;/span&gt;
+    &lt;input value="4567"...
+    
+    ... id="zipMask"&gt;&lt;i&gt;45678&lt;/i&gt;&lt;/span&gt;
+    &lt;input value="45678"...
+</code></pre>
+
+<p>As the user enters data, the current value of the form control is placed in the mask's first child DOM node, which is by default an empty &lt;i&gt; element. The remaining characters of the mask follow as plain text.</p>
+
+<p>With a few lines of CSS, this mask appears directly behind the text box, with the content of the &lt;i&gt; being identical to, but directly behind, the current value. The contents of the &lt;i&gt; are transparent, either with <code>opacity: 0</code>, <code>color: transparent</code> or <code>visibility: hidden</code>. The input must also have a transparent background, allowing the node behind it to show through.</p>
+
+<p>In the following image, we've changed the style of the &lt;i&gt; to be green and opaque, and the mask to appear above the input to make it more obvious how the masked text works. This is the third example in the code snippets above: <code>&#8230; id="zipMask"&gt;&lt;i&gt;45&lt;/i&gt;XXX&lt;/span&gt; &lt;input value="45"...</code></p>
+
+<p><img src="i/greenmask.png" alt="In this image, we've changed the style of the &lt;i&gt; to be green and opaque, and the mask to appear above the input to make it more obvious how the masked text works. This is the third example in the code snippets above: ... id=&quot;zipMask&quot;&gt;&lt;i&gt;45&lt;/i&gt;XXX&lt;/span&gt;&lt;input value=&quot;45&quot;...">.</p>
+
+<p>As the user enters correct data, the value of the &lt;input&gt; updates, the text node inside the &lt;i&gt; updates to match the value, and the string making up the rest of the mask (the visible part of the mask shown in pink in the image) shrinks to match the remaining characters of the mask. If the user enters data not matching the value of the <code>pattern</code> attribute, neither the value nor the mask will update.</p>
+
+<p>Including <code>display: none;</code> would not work, as the masking is reliant on the width of the &lt;i&gt; being the same as the current value. The box model dimensions of the &lt;i&gt; ensure the mask lines up perfectly with the current value.</p>
+
+<p>While the Github repository includes all the code you need, let's review some of the important points:</p>
+
+<pre><code>.shell {
+    position: relative;
+}
+.shell span {
+    position: absolute;
+    left: 3px;
+    top: 1px;
+    color: #ccc;
+    pointer-events: none;
+    z-index: -1; 
+ }
+.shell span i {
+   font-style: normal;
+    /* any of these 3 will work */
+    color: transparent;
+    opacity: 0;
+    visibility: hidden; 
+}
+input.masked,
+.shell span {
+    font-size: 16px;
+    font-family: monospace;
+    background-color: transparent;
+ }
+</code></pre>
+
+<p>The shell has to be relatively positioned so the absolutely positioned child span will be positioned relative to the shell. The input and the mask must both have the same font size and font family so they will line up perfectly as they update.</p>
+
+<p>Above I stated, "the input must also have a transparent background, allowing the node behind it to show through." This isn't necessarily true. If your design requires the inputs have a background color or background image, you can put the mask after the input, making it appear on top of the input, and set the mask to <code>pointer-events: none</code>.<sup><a href="#fn3" id="fnref3">[3]</a></sup></p>
+
+<p>If your placeholder includes delimiters, include the delimeters in your placeholder and pattern attributes and the script will automatically be set to include them. Make sure your placeholder matches the regular expression of your <code>pattern</code> when all the X's are converted to integers.</p>
+
+<p>If your regular expressions include letters, you must include a <code>data-charset</code> attribute that takes as its value the same value as the pattern, but include an <code>X</code> for each number and an underscore (<code>_</code>) for each required letter. The Canadian postal code is a good example of this: .</p>
+
+<pre><code>&lt;label for="zipca"&gt;Canadian Postal Code&lt;/label&gt;
+&lt;input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked" 
+    data-charset="_X_ X_X" id="zipca" type="text" name="zipcodeca" 
+    title="6-character alphanumeric zip code in the format of A1A 1A1"&gt;
+</code></pre>
+
+<p>If the digits allowed by your regular expression are constrained or complicated, such as months only allowing 01-12, include a <code>data-valid-example</code> attribute that takes as its value a valid string that would match the pattern.</p>
+
+<pre><code>&lt;label for="expiration"&gt; Credit Card Expiration &lt;/label&gt;
+&lt;input id="expiration" type="tel" placeholder="MM/YY" class="masked" 
+    pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" 
+    data-valid-example="05/18"&gt;
+</code></pre>
+
+<p>If you include the <code>data-valid-example</code> attribute, the script will validate the progress on the user input, comparing it to the valid example given and the value of the <code>pattern</code> attribute.</p>
+
+<p>If you have a different extraneous requirement, you can add your own enhancements to the script. The code is available on Github at <a href="https://github.com/estelle/input-masking">https://github.com/estelle/input-masking</a>.</p>
+
+<p>If you are OK with all the default options, simply add the attribute <code>data-autoinit</code> to your script tag</p>
+
+<p><code>&lt;script src="path/js/masking-input.js" data-autoinit="true"&gt;&lt;/script&gt;</code></p>
+
+<p>Alternatively, if you need to pass custom options or want to initialize the script yourself, you can do so like this:</p>
+
+<pre><code>new InputMask( /* options */ );
+</code></pre>
+
+<p>If you don't like something in the script, it's open source. Fork it. If you think others will like your suggestions (and even if you don't), create a pull request. Note: if you have new features that can help people, but wouldn't be used by 99% of SAIM users, add a new script. One of the features of SAIM is how lean it is.</p>
+
+<p>I developed SAIM because I wanted a small, accessible masking script with no required dependencies. I encourage all developers to avoid adding dependencies &mdash; avoid resume driven development &mdash; unless you really need them. With a little bit of thinking outside the box, you can create performant, accessible scripts that meet your product needs without slowing down your site or costing your visitors a ton in bandwidth.</p>
+
+<footer>
+<ol>
+<li id="fn1">
+<p>This version was created with inline event handlers, but demonstrates the behavior created by larger watermarking scripts. <a href="#fnref1">↩</a></p>
+</li>
+<li id="fn2">
+<p>You can access the placeholder via the shadowroot of the input element with ::-webkit-input-placeholder, ::-moz-placeholder and :-ms-input-placeholder. Additionally, the ::placeholder pseudo-element has been proposed as part of <a href="https://drafts.csswg.org/css-pseudo-4/#placeholder-pseudo">CSS Pseudo-Elements Module Level 4</a>. <a href="#fnref2">↩</a></p>
+</li>
+<li id="fn3">
+<p>If you need this design and you're supporting IE 10 and earlier, you'll want to include the <a href="https://github.com/kmewhort/pointer_events_polyfill">pointer events polyfill</a>, at 2.6 KB, 1.2 KB minified. <a href="#fnref3">↩</a></p>
+</li>
+</ol>
+</footer>
+</body>
+</html>
