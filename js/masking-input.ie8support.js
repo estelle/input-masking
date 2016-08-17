@@ -1,19 +1,19 @@
-var InputMask = function ( opts ) {
-  if ( opts && opts.masked ) {
+var InputMask = function ( options ) {
+  if ( options && options.masked ) {
     // Make it easy to wrap this plugin and pass elements instead of a selector
-    opts.masked = typeof opts.masked === string ? document.querySelectorAll( opts.masked ) : opts.masked;
+    options.masked = typeof options.masked === string ? document.querySelectorAll( options.masked ) : options.masked;
   }
 
-  if ( opts ) {
-    this.opts = {
-      masked: opts.masked || document.querySelectorAll( this.d.masked ),
-      mNum: opts.mNum || this.d.mNum,
-      mChar: opts.mChar || this.d.mChar,
-      error: opts.onError || this.d.onError
+  if ( options ) {
+    this.options = {
+      masked: options.masked || document.querySelectorAll( this.defaults.masked ),
+      maskedNumber: options.maskedNumber || this.defaults.maskedNumber,
+      maskedLetter: options.maskedLetter || this.defaults.maskedLetter,
+      error: options.onError || this.defaults.onError
     }
   } else {
-    this.opts = this.d;
-    this.opts.masked = document.querySelectorAll( this.opts.masked );
+    this.options = this.defaults;
+    this.options.masked = document.querySelectorAll( this.options.masked );
   }
 
   this.refresh( true );
@@ -22,58 +22,87 @@ var InputMask = function ( opts ) {
 var inputMask = {
 
   // Default Values
-  d: {
+  defaults: {
     masked : '.masked',
-    mNum : 'XdDmMyY9',
-    mChar : '_',
+    maskedNumber : 'XdDmMyY9',
+    maskedLetter : '_',
+    noValidate: '',
     onError: function(){}
   },
 
   refresh: function(init) {
-    var t, parentClass;
+    var input, parentClass;
 
     if ( !init ) {
-      this.opts.masked = document.querySelectorAll( this.opts.masked );
+      this.options.masked = document.querySelectorAll( this.options.masked );
     }
 
-    for(i = 0; i < this.opts.masked.length; i++) {
-      t = this.opts.masked[i]
-      parentClass = t.parentNode.getAttribute('class');
+    for(i = 0; i < this.options.masked.length; i++) {
+      input = this.options.masked[i]
+      parentClass = input.parentNode.getAttribute('class');
 
       if ( !parentClass || ( parentClass && parentClass.indexOf('shell') === -1 ) ) {
-        this.createShell(t);
-        this.activateMasking(t);
+        this.createShell(input);
+        if ( this.options.noValidate ) {
+          this.noValidateSetup(input);
+        }
+        this.activateMasking(input);
       }
     }
   },
 
-  // replaces each masked t with a shall containing the t and it's mask.
-  createShell : function (t) {
+  noValidate: function(input) {
+    this.getForm( input ).setAttribute('noValidate',true);
+  },
+
+  // Remove when IE8 dies
+  getForm: function(input) {
+
+    // Support: IE8 Only
+    // IE8 does not support the form attribute and when it is supplied. It overwrites the form prop
+    // with a string, so we need to find the proper form.
+    return typeof input.form === "string" ?  this.closestForm( input ): input.form;
+
+  },
+
+  // Remove when IE8 dies
+  closestForm: function(input) {
+    var parent = input.parentNode;
+    for (;parent.parentNode; parent = parent.parentNode) {
+      if(parent.tagName.toUpperCase() === 'form') {
+        return parent;
+      }
+    }
+    return document.body;
+  },
+
+  // replaces each masked input with a shall containing the input and it's mask.
+  createShell : function (input) {
     var wrap = document.createElement('span'),
         mask = document.createElement('span'),
         emphasis = document.createElement('i'),
-        tClass = t.getAttribute('class'),
-        pTxt = t.getAttribute('placeholder'),
-        placeholder = document.createTextNode(pTxt);
+        inputClass = input.getAttribute('class'),
+        placeholderText = input.getAttribute('placeholder'),
+        placeholder = document.createTextNode(placeholderText);
 
-    t.setAttribute('maxlength', placeholder.length);
-    t.setAttribute('data-placeholder', pTxt);
-    t.removeAttribute('placeholder');
+    input.setAttribute('maxlength', placeholder.length);
+    input.setAttribute('data-placeholder', placeholderText);
+    input.removeAttribute('placeholder');
 
 
-    if ( !tClass || ( tClass && tClass.indexOf('masked') === -1 ) ) {
-      t.setAttribute( 'class', tClass + ' masked');
+    if ( !inputClass || ( inputClass && inputClass.indexOf('masked') === -1 ) ) {
+      input.setAttribute( 'class', inputClass + ' masked');
     }
 
     mask.setAttribute('aria-hidden', 'true');
-    mask.setAttribute('id', t.getAttribute('id') + 'Mask');
+    mask.setAttribute('id', input.getAttribute('id') + 'Mask');
     mask.appendChild(emphasis);
     mask.appendChild(placeholder);
 
     wrap.setAttribute('class', 'shell');
     wrap.appendChild(mask);
-    t.parentNode.insertBefore( wrap, t );
-    wrap.appendChild(t);
+    input.parentNode.insertBefore( wrap, input );
+    wrap.appendChild(input);
   },
 
   setValueOfMask : function (e) {
@@ -84,14 +113,14 @@ var inputMask = {
   },
 
   // add event listeners
-  activateMasking : function (t) {
+  activateMasking : function (input) {
     var that = this;
-    if (t.addEventListener) { // remove "if" after death of IE 8
-      t.addEventListener('keyup', function(e) {
+    if (input.addEventListener) { // remove "if" after death of IE 8
+      input.addEventListener('keyup', function(e) {
         that.handleValueChange.call(that,e);
       }, false);
-    } else if (t.attachEvent) { // For IE 8
-        t.attachEvent('onkeyup', function(e) {
+    } else if (input.attachEvent) { // For IE 8
+        input.attachEvent('onkeyup', function(e) {
         e.target = e.srcElement;
         that.handleValueChange.call(that, e);
       });
@@ -122,12 +151,12 @@ var inputMask = {
     for (i = 0, j = 0; i < l; i++) {
         isInt = !isNaN(parseInt(strippedValue[j]));
         isLetter = strippedValue[j] ? strippedValue[j].match(/[A-Z]/i) : false;
-        matchesNumber = this.opts.mNum.indexOf(placeholder[i]) >= 0;
-        matchesLetter = this.opts.mChar.indexOf(placeholder[i]) >= 0;
+        matchesNumber = this.options.maskedNumber.indexOf(placeholder[i]) >= 0;
+        matchesLetter = this.options.maskedLetter.indexOf(placeholder[i]) >= 0;
         if ((matchesNumber && isInt) || (isCharsetPresent && matchesLetter && isLetter)) {
                 newValue += strippedValue[j++];
           } else if ((!isCharsetPresent && !isInt && matchesNumber) || (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))) {
-                //this.opts.onError( e ); // write your own error handling function
+                //this.options.onError( e ); // write your own error handling function
                 return newValue;
         } else {
             newValue += placeholder[i];
