@@ -179,7 +179,7 @@ Handles these test cases:
 
 ## Exceptions
 
-####Complex Regular Expressions
+#### Complex Regular Expressions
 If the digits allowed by your regular expression are constrained or complicated, such as months only allowing 01-12, include a made up `data-valid-example` attribute that takes as its value a **valid** value that would match the pattern.
 
 ```html
