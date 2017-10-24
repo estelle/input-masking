@@ -75,7 +75,7 @@ There are accessibility features baked into the examples that you must maintain 
 ## Customization
 
 ### Initalization
-If you are ok with all the default options you can have masked-inputs initalize it self and avoid writing any JavaScript at all. Simplu add the attribute `data-autoinit="false"` to your script tag
+If you are ok with all the default options you can have masked-inputs initalize it self and avoid writing any JavaScript at all. Simply add the attribute `data-autoinit="false"` to your script tag
 
 `<script src="path/js/masking-input.js" data-autoinit="true"></script>`
 
