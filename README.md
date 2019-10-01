@@ -56,6 +56,22 @@ If the digits allowed by your regular expression are constrained or complicated,
     	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
     	data-valid-example="05/18">
 ```
+### React Quickstart
+`npm i input-masking`
+```javascript
+import { MaskedInput } from 'input-masking';
+
+<MaskedInput
+  id="expiration"
+  type="tel"
+  placeholder="MM/YY"
+  pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
+  data-valid-example="05/18"
+  label='Credit Card Expiration'
+/>
+```
+
+The ReactJS component automatically applies a label
 
 ## Accessibility
 
