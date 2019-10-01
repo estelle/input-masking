@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Shell, TransparentInput, BackgroundSpan, Guide} from './maskedInput.styled'
+
 /**
  * The masked input requires the following props
  * @param {string} id "The `id` is necessary for pairing up the form control with its associated label. It is also used by the script for pairing the mask with the form control."
@@ -11,6 +13,7 @@ import React from 'react';
  * @param {string} [data-charset] - If your regular expressions include letters, you must include the made a made up attribute called `data-charset`.
  */
 export const MaskedInput = props => {
+  const [val, setVal] = useState(null);
 
   const handleChange = function(e) {
     e.target.value = handleCurrentValue(e);
@@ -108,14 +111,12 @@ export const MaskedInput = props => {
     // if value is empty, remove label parent class
     if (currValue.length == 0) {
       if (e.target.required) {
-        updateLabelClass(e, 'required', true);
         handleError(e, 'required');
       }
     } else {
       pattern = new RegExp('^' + props.pattern + '$');
 
       if (pattern.test(currValue)) {
-        updateLabelClass(e, 'good', true);
       } else {
         updateLabelClass(e, 'error', true);
         handleError(e, 'invalidValue');
@@ -135,43 +136,31 @@ export const MaskedInput = props => {
     props.handleFocus && props.handleFocus(e);
   };
 
-  const updateLabelClass = function(e, className, replaceExistingClass) {
-    var parentLI = e.target.parentNode.parentNode,
-      pastClasses = ['error', 'required', 'focus', 'good'],
-      i;
-
-    if (replaceExistingClass) {
-      for (i = 0; i < pastClasses.length; i++) {
-        parentLI.classList.remove(pastClasses[i]);
-      }
-    }
-
-    parentLI.classList.add(className);
-  };
-
   return (
-    <span className="maskShell">
-      <label htmlFor={props.id} />
-      <span aria-hidden="true" id={props.id + 'Mask'}>
-        <i>{props.value || ''}</i>
-        {props.placeholder}
-      </span>
-      <input
-        id={props.id}
-        onChange={handleChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        name={props.id}
-        type={props.type}
-        className={'masked' + (props.className || '')}
-        data-placeholder={props.placeholder}
-        data-pattern={props.pattern}
-        data-valid-example={props.example}
-        aria-required={props.required}
-        data-charset={props['data-charset']}
-        required={props.required}
-        title={props.title}
-      />
-    </span>
+      <>
+        <label htmlFor={props.id}>{props.label}</label>
+        <Shell>
+          <BackgroundSpan aria-hidden="true" id={props.id + 'Mask'}>
+            <Guide>{props.value || ''}</Guide>
+            {props.placeholder}
+          </BackgroundSpan>
+          <TransparentInput
+            id={props.id}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            name={props.id}
+            type={props.type}
+
+            data-placeholder={props.placeholder}
+            data-pattern={props.pattern}
+            data-valid-example={props.example}
+            aria-required={props.required}
+            data-charset={props['data-charset']}
+            required={props.required}
+            title={props.title}
+          />
+        </Shell>
+    </>
   );
 };
