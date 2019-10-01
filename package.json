@@ -8,17 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/estelle/input-masking"
+    "url": "git+https://github.com/stephencweiss/input-masking"
   },
   "keywords": [
     "a11y",
     "input",
     "masking"
   ],
-  "author": "Estelle Weyl",
+  "author": "Stephen Weiss",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/stephencweiss/input-masking/issues"
   },
-  "homepage": "https://github.com/stephencweiss/input-masking#readme"
+  "homepage": "https://github.com/stephencweiss/input-masking#readme",
+  "dependencies": {
+    "react": "^16.10.1"
+  }
 }
