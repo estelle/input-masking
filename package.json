@@ -1,0 +1,24 @@
+{
+  "name": "input-masking",
+  "version": "1.0.0",
+  "description": "Styleable, Accessble Input Masking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estelle/input-masking"
+  },
+  "keywords": [
+    "a11y",
+    "input",
+    "masking"
+  ],
+  "author": "Estelle Weyl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stephencweiss/input-masking/issues"
+  },
+  "homepage": "https://github.com/stephencweiss/input-masking#readme"
+}
