@@ -13,7 +13,7 @@ import {Shell, TransparentInput, BackgroundSpan, Guide} from './maskedInput.styl
  * @param {string} [data-charset] - If your regular expressions include letters, you must include the made a made up attribute called `data-charset`.
  */
 export const MaskedInput = props => {
-  const [val, setVal] = useState(null);
+  // const [val, setVal] = useState(null);
 
   const handleChange = function(e) {
     e.target.value = handleCurrentValue(e);
