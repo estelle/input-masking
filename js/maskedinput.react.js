@@ -10,7 +10,7 @@ import React from 'react';
  * @param {string} type The `type` of input should also be included, usually to `type="tel"` as most form controls that could make use of a masking are numeric values.
  * @param {string} [data-charset] - If your regular expressions include letters, you must include the made a made up attribute called `data-charset`.
  */
-export var MaskedInput = props => {
+export const MaskedInput = props => {
 
   const handleChange = function(e) {
     e.target.value = handleCurrentValue(e);
@@ -19,8 +19,6 @@ export var MaskedInput = props => {
   };
 
   const handleCurrentValue = function(e) {
-    const charset = e.target.getAttribute('data-charset');
-    // debugger;
     var isCharsetPresent = e.target.getAttribute('data-charset'),
       maskedNumber = 'XMDY',
       maskedLetter = '_',

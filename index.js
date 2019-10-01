@@ -1,3 +1,1 @@
-import MaskedInput from './js/maskedinput.react'
-
-export { MaskedInput };
+export * from './js/maskedinput.react'
