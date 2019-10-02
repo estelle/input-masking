@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
 import {
   Container,
-  Guide,
   MaskedInputStyles,
-  MaskSpan,
-  Shell,
+  Mask,
+  MaskWrapper,
   TransparentInput
 } from "./MaskedInput.styled";
 
@@ -17,7 +16,6 @@ const validateProgress = function(
   const regExpPattern = new RegExp(pattern);
   const valLength = value.length;
   let testValue = "";
-
   //convert to months
   if (valLength === 1 && placeholder.toUpperCase().substr(0, 2) == "MM") {
     if (Number(value) > 1 && Number(value) < 10) {
@@ -49,6 +47,7 @@ interface MaskedInputProps {
   value: string;
   characterSet?: string;
   example?: string;
+  number?: string;
   required?: boolean;
   validExample?: string;
   handleChange: (e: Event) => void;
@@ -57,11 +56,10 @@ interface MaskedInputProps {
 }
 
 export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
-  const guideRef = useRef(null);
+  const maskRef = useRef(null);
   const {
     id,
     handleBlur,
-    // handleChange,
     handleFocus,
     type,
     placeholder,
@@ -73,19 +71,19 @@ export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
     value,
     ...rest
   } = props;
-  console.log({ props, rest });
 
   const handleChange = function(e) {
     e.target.value = handleCurrentValue(e);
-    guideRef.current.innerText = setGuideValue(e);
+    maskRef.current.innerHTML = setGuideValue(e);
     props.handleChange && props.handleChange(e);
   };
 
   const handleCurrentValue = function(e) {
-    const isCharsetPresent = props.characterSet ? true : false;
+    const isCharsetPresent = !!props.characterSet;
     const placeholder = props.characterSet || props.placeholder;
-    const maskedNumber = "XMDY"; // the available matches for a number charset
-    const maskedLetter = "_"; // the available matches for a alphabetic charset
+    const maskedNumber = "#XZdDmMyY0123456789"; // the available matches for a number charset
+    const maskedLetter =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"; // the available matches for a alphabetic charset
 
     const value = e.target.value;
 
@@ -139,34 +137,34 @@ export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
   const setGuideValue = function(e) {
     const value = e.target.value;
     const placeholder = props.characterSet || props.placeholder;
-    return value + placeholder.substr(value.length);
+    return `<span style="color: transparent;">${value}</span>${placeholder.substr(
+      value.length
+    )}`;
   };
 
   return (
     <Container>
-      <Shell {...props}>
-        <TransparentInput
-          {...rest}
-          id={id}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          name={id}
-          type={type}
-          data-placeholder={placeholder}
-          data-pattern={pattern}
-          data-valid-example={validExample}
-          aria-required={required}
-          data-characterset={characterSet}
-          required={required}
-          title={title}
-        />
-        <MaskSpan aria-hidden="true" id={id + "Mask"}>
-          <Guide ref={guideRef} {...rest}>
-            {characterSet || placeholder}
-          </Guide>
-        </MaskSpan>
-      </Shell>
+      <TransparentInput
+        {...rest}
+        id={id}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        name={id}
+        type={type}
+        data-placeholder={placeholder}
+        data-pattern={pattern}
+        data-valid-example={validExample}
+        aria-required={required}
+        data-characterset={characterSet}
+        required={required}
+        title={title}
+      />
+      <MaskWrapper {...rest}>
+        <Mask ref={maskRef} {...rest}>
+          {characterSet || placeholder}
+        </Mask>
+      </MaskWrapper>
     </Container>
   );
 };

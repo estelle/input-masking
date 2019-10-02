@@ -1,21 +1,26 @@
-import styled, {css} from 'styled-components'
+import styled, { css } from "styled-components";
 
 export interface MaskedInputStyles {
-  fontFamily?: string,
-  fontSize?: string,
-  paddingRight?: string,
-  uppercase?: string,
-  lineHeight?: string,
-  paddingLeft?: string,
+  fontFamily?: string;
+  fontSize?: string;
+  paddingRight?: string;
+  uppercase?: string;
+  lineHeight?: string;
+  paddingLeft?: string;
 }
 
 const consistentTypography = css`
-  font-family: ${props => props.fontFamily ? props.fontFamily : 'monospace'};
-  font-size: ${props => props.fontSize ? props.fontSize : '1em'};
-  padding-right: ${props => props.paddingRight ? props.paddingRight : '10px'};
-  text-transform: ${props => props.uppercase ? 'uppercase' : ''};
-  line-height: ${props => props.lineHeight ? props.lineHeight : '1'};
-`
+  padding: ${({ padding }) => (padding ? padding : "")};
+  border: ${({ border }) => (border ? border : "")};
+  margin: ${({ margin }) => (margin ? margin : "")};
+  font-family: ${props => (props.fontFamily ? props.fontFamily : "inherit")};
+  font-size: ${props => (props.fontSize ? props.fontSize : "1em")};
+  padding-right: ${props => (props.paddingRight ? props.paddingRight : "10px")};
+  padding-left: ${props => (props.paddingLeft ? props.paddingLeft : "3px")};
+  padding-top: ${props => (props.paddingTop ? props.paddingTop : "1px")};
+  text-transform: ${props => (props.uppercase ? "uppercase" : "")};
+  line-height: ${props => (props.lineHeight ? props.lineHeight : "1")};
+`;
 
 export const TransparentInput = styled.input`
   position: absolute;
@@ -23,36 +28,37 @@ export const TransparentInput = styled.input`
   ${consistentTypography}
 `;
 
-export const MaskSpan = styled.span`
+export const MaskWrapper = styled.span`
   position: absolute;
-  background: transparent;
+  pointer-events: none !important;
+  border: 3px solid transparent !important;
+  background-color: transparent !important;
+  z-index: -1;
+  height: inherit;
+  ${consistentTypography}
 `;
 
-export const Guide = styled.span`
-  font-style: normal;
+export const Mask = styled.span`
+  /* font-style: normal; */
+  background: transparent !important;
+  border: 3px solid transparent !important;
+  background-color: transparent !important;
   white-space: nowrap;
   ${consistentTypography}
-  `;
 
-  export const Container = styled.div`
-  display: inherit;
-  padding-left: ${props => props.paddingLeft ? props.paddingLeft : '3px'};
+  /* Only needed if the shell isn't being used*/
+  /* position: absolute; */
+  display: contents;
+
+  pointer-events: none !important;
+  color: ${props => (props.guideColor ? props.guideColor : "#ccc")};
+  z-index: -1;
 `;
 
-export const Shell = styled.span`
+export const Container = styled.div`
   position: relative;
-  line-height: 1;
   display: inherit;
-  height: 1em;
 
-  ${MaskSpan} {
-    position: absolute;
-    left:  ${props => props.paddingLeft ? props.paddingLeft : '3px'};
-    top: ${props => props.top ? props.top : '.1em'};
-    pointer-events: none;
-    color: ${props => props.guideColor ? props.guideColor : '#ccc'};
-    z-index: -1;
-  }
-
-
-`
+  /* padding-left: ${props =>
+    props.paddingLeft ? props.paddingLeft : "3px"}; */
+`;
