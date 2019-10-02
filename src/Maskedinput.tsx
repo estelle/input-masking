@@ -1,18 +1,5 @@
 import React, { useRef } from 'react';
-import { Guide, Shell, TransparentInput, MaskSpan } from './MaskedInput.styled'
-
-/**
- * The masked input requires the following props
- * @param {string} id "The `id` is necessary for pairing up the form control with its associated label. It is also used by the script for pairing the mask with the form control."
- * @param {string} class The `class` of the input includes "masked" or other masking class set by the developer.
- * @param {string} pattern The `pattern` defines the regular expression the valid value must conform to. (You only want a mask if you have a pattern. If there is no pattern to match, there will be no mask that makes sense).
- * @param {string} placeholder The `placeholder` is the placeholder or masking text.
- * @param {string} name The `name` is required if you are submitting the form, as forms pass along name/value pairs.
- * @param {string} title The `title` attribute, which is not officially required, is essentially required whenever the `pattern` attribute is used for accessibility reasons: the `title` is used to describe the requirements of the regular expression.
- * @param {string} type The `type` of input should also be included, usually to `type="tel"` as most form controls that could make use of a masking are numeric values.
- * @param {string} [data-charset] - If your regular expressions include letters, you must include the made a made up attribute called `data-charset`.
- */
-
+import { Container, Guide, Shell, TransparentInput, MaskSpan } from './MaskedInput.styled'
 
 const validateProgress = function(value: string, validExample: string, pattern: string, placeholder: string) {
   const regExpPattern = new RegExp(pattern);
@@ -50,7 +37,6 @@ interface MaskedInputProps {
   value: string,
   characterSet?: string,
   example?: string,
-  label?: string,
   required?: boolean,
   validExample?: string,
   handleChange: (e: Event) => void,
@@ -63,7 +49,7 @@ export const MaskedInput = (props: MaskedInputProps) => {
 
   const handleChange = function(e) {
     e.target.value = handleCurrentValue(e);
-    guideRef.current.innerHTML = setValueOfMask(e);
+    guideRef.current.innerText = setGuideValue(e);
     props.handleChange && props.handleChange(e);
   };
 
@@ -108,11 +94,10 @@ export const MaskedInput = (props: MaskedInputProps) => {
     return newValue;
   };
 
-  const setValueOfMask = function(e) {
+  const setGuideValue = function(e) {
     const value = e.target.value;
     const placeholder = props.placeholder
-
-    return '<span>' + value + placeholder.substr(value.length) + '</span>';
+    return value + placeholder.substr(value.length);
   };
 
 
@@ -150,8 +135,7 @@ export const MaskedInput = (props: MaskedInputProps) => {
   };
 
   return (
-      <>
-        <label htmlFor={props.id}>{props.label}</label>
+      <Container>
         <Shell>
           <TransparentInput
             id={props.id}
@@ -168,11 +152,10 @@ export const MaskedInput = (props: MaskedInputProps) => {
             required={props.required}
             title={props.title}
           />
-          <MaskSpan ref={guideRef} aria-hidden="true" id={props.id + 'Mask'}>
-            <Guide >{props.value || ''}</Guide>
-            {props.placeholder}
+          <MaskSpan  aria-hidden="true" id={props.id + 'Mask'}>
+            <Guide ref={guideRef}>{props.placeholder}</Guide>
           </MaskSpan>
         </Shell>
-    </>
+     </Container>
   );
 };

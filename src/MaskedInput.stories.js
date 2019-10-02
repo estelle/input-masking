@@ -18,6 +18,8 @@ const ControllingComponent = () => {
       <div>
         The value is: {val}
       </div>
+      <div style={{display: 'flex'}}>
+        <label htmlFor={text('id','zip')}>{  text('label','Zip Code')}</label>
       <MaskedInput
         id={text('id','zip')}
         placeholder={text('placeholder','xxxxx-xxxx')}
@@ -32,7 +34,8 @@ const ControllingComponent = () => {
         pattern={text('pattern','ddddd-dddd')}
         name="zip"
         title={text('title',"9-character zip code in the format of 12345-6789")}
-       />
+        />
+        </div>
     </>
   )
 }
@@ -52,6 +55,10 @@ const CharacterSetComponent = () => {
       <div>
         The value is: {val}
       </div>
+      <div style={{display: 'flex'}}>
+
+
+      <label htmlFor={text('id','zipca')}>{text('label','Canadian Zip Code')}</label>
       <MaskedInput
         id={text('id','zipca')}
         placeholder={text('placeholder','xxx xxx')}
@@ -62,11 +69,11 @@ const CharacterSetComponent = () => {
         handleBlur={handleBlur}
         handleChange={handleChange}
         characterSet={text('characterSet','_X_ X_X')}
-        label={text('label','Canadian Zip Code')}
         pattern={text('pattern','wdw dwd')}
         name="canadianzip"
         title={text('title',"6-character alphanumeric code in the format of A1A 1A1")}
-       />
+        />
+        </div>
     </>
   )
 }
