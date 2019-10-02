@@ -12,7 +12,27 @@ import {Shell, TransparentInput, BackgroundSpan, Guide} from './MaskedInput.styl
  * @param {string} type The `type` of input should also be included, usually to `type="tel"` as most form controls that could make use of a masking are numeric values.
  * @param {string} [data-charset] - If your regular expressions include letters, you must include the made a made up attribute called `data-charset`.
  */
-export const MaskedInput = props => {
+
+interface MaskedInputProps {
+  id: string,
+  class: string,
+  pattern: string,
+  placeholder: string,
+  name: string,
+  title: string,
+  type: string,
+  value: string,
+  characterSet?: string,
+  example?: string,
+  label?: string,
+  required?: boolean,
+  validExample?: string,
+  handleChange: (e: Event) => void,
+  handleBlur?: (e: Event) => void,
+  handleFocus?: (e: Event) => void,
+}
+
+export const MaskedInput = (props: MaskedInputProps) => {
   const guideRef = useRef(null);
   const handleChange = function(e) {
     e.target.value = handleCurrentValue(e);
@@ -21,12 +41,12 @@ export const MaskedInput = props => {
   };
 
   const handleCurrentValue = function(e) {
-    var isCharsetPresent = e.target.getAttribute('data-charset'),
+    var isCharsetPresent = props.characterSet ? true : false,
       maskedNumber = 'XMDY', // the available matches for a number charset
       maskedLetter = '_', // the available matches for a alphabetic charset
-      placeholder = isCharsetPresent || e.target.getAttribute('data-placeholder'),
+      placeholder = props.characterSet || props.placeholder,
       value = e.target.value,
-      newValue = '',
+      newValue = ''
 
     // strip special characters
     const strippedValue = isCharsetPresent ? value.replace(/\W/g, '') : value.replace(/\D/g, '');
@@ -109,7 +129,7 @@ export const MaskedInput = props => {
 
       if (pattern.test(currValue)) {
       } else {
-        updateLabelClass(e, 'error', true);
+
         handleError(e, 'invalidValue');
       }
     }
@@ -123,7 +143,7 @@ export const MaskedInput = props => {
   };
 
   const handleFocus = function(e) {
-    updateLabelClass(e, 'focus', false);
+
     props.handleFocus && props.handleFocus(e);
   };
 
@@ -147,7 +167,7 @@ export const MaskedInput = props => {
             data-pattern={props.pattern}
             data-valid-example={props.example}
             aria-required={props.required}
-            data-charset={props['data-charset']}
+            data-charset={props.characterSet}
             required={props.required}
             title={props.title}
           />
