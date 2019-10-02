@@ -1,7 +1,7 @@
 var InputMask = function ( options ) {
   if ( options && options.masked ) {
     // Make it easy to wrap this plugin and pass elements instead of a selector
-    options.masked = typeof options.masked === string ? document.querySelectorAll( options.masked ) : options.masked;
+    options.masked = typeof options.masked === 'string' ? document.querySelectorAll( options.masked ) : options.masked;
   }
 
   if ( options ) {
