@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 
 export const TransparentInput = styled.input`
-  appearance: none;
   position: absolute;
   background-color: transparent;
+  font-family: monospace;
+  font-size: 16px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 1;
 `;
 
 export const MaskSpan = styled.span`
@@ -14,8 +18,13 @@ export const MaskSpan = styled.span`
 export const Guide = styled.span`
   font-style: normal;
   white-space: nowrap;
-  appearance: none;
+  font-family: monospace;
+  font-size: 16px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 1;
 `;
+
 export const Container = styled.div`
   display: inherit;
   padding-left: 3px;
