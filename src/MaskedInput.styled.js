@@ -1,10 +1,23 @@
 import styled from 'styled-components'
 
+export const TransparentInput = styled.input`
+  position: absolute;
+  background-color: transparent;
+`;
+
+export const MaskSpan = styled.span`
+  position: absolute;
+  background: transparent;
+`;
+
+export const Guide = styled.span``;
+
 export const Shell = styled.span`
 position: relative;
 line-height: 1;
+display: inherit;
 
-  ${BackgroundSpan} {
+  ${MaskSpan} {
     position: absolute;
     left: 3px;
     top: 1px;
@@ -21,16 +34,3 @@ line-height: 1;
     visibility: hidden;
   }
 `
-
-export const TransparentInput = styled.input`
-  background-color: transparent;
-  position: absolute;
-`;
-
-export const BackgroundSpan = styled.span`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
-export const Guide = styled.i``
