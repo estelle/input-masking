@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Container, Guide, Shell, TransparentInput, MaskSpan } from './MaskedInput.styled'
+import { Container, Guide, MaskedInputStyles, MaskSpan, Shell, TransparentInput } from './MaskedInput.styled'
 
 const validateProgress = function(value: string, validExample: string, pattern: string, placeholder: string) {
   const regExpPattern = new RegExp(pattern);
@@ -44,7 +44,7 @@ interface MaskedInputProps {
   handleFocus?: (e: Event) => void,
 }
 
-export const MaskedInput = (props: MaskedInputProps) => {
+export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
   const guideRef = useRef(null);
 
   const handleChange = function(e) {
@@ -55,9 +55,10 @@ export const MaskedInput = (props: MaskedInputProps) => {
 
   const handleCurrentValue = function(e) {
     const isCharsetPresent = props.characterSet ? true : false;
+    const placeholder = props.characterSet || props.placeholder;
     const maskedNumber = 'XMDY'; // the available matches for a number charset
     const maskedLetter = '_'; // the available matches for a alphabetic charset
-    const placeholder = props.characterSet || props.placeholder;
+
     const value = e.target.value;
 
     // strip special characters
@@ -70,13 +71,13 @@ export const MaskedInput = (props: MaskedInputProps) => {
       const isLetter = strippedValue[j] ? strippedValue[j].match(/[A-Z]/i) : false;
       const matchesNumber = maskedNumber.indexOf(placeholder[i]) >= 0;
       const matchesLetter = maskedLetter.indexOf(placeholder[i]) >= 0;
+
       if ((matchesNumber && isInt) || (isCharsetPresent && matchesLetter && isLetter)) {
         newValue += strippedValue[j++];
       } else if (
         (!isCharsetPresent && !isInt && matchesNumber) ||
         (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))
       ) {
-        //TODO: Add error handling when passed through
         return newValue;
       } else {
         newValue += placeholder[i];
@@ -96,42 +97,8 @@ export const MaskedInput = (props: MaskedInputProps) => {
 
   const setGuideValue = function(e) {
     const value = e.target.value;
-    const placeholder = props.placeholder
+    const placeholder = props.characterSet || props.placeholder
     return value + placeholder.substr(value.length);
-  };
-
-
-
-  const handleBlur = function(e) {
-    var currValue = e.target.value,
-      pattern;
-
-    // if value is empty, remove label parent class
-    if (currValue.length == 0) {
-      if (e.target.required) {
-        handleError(e, 'required');
-      }
-    } else {
-      pattern = new RegExp('^' + props.pattern + '$');
-
-      if (pattern.test(currValue)) {
-      } else {
-
-        handleError(e, 'invalidValue');
-      }
-    }
-    props.handleBlur && props.handleBlur(e);
-  };
-
-  const handleError = function(e, errorMsg) {
-    // the event and errorMsg name are passed. Label is already handled. What else do we do with error?
-    //var possibleErrorMsgs = ['invalidValue', 'required'];
-    return true;
-  };
-
-  const handleFocus = function(e) {
-
-    props.handleFocus && props.handleFocus(e);
   };
 
   return (
@@ -140,20 +107,20 @@ export const MaskedInput = (props: MaskedInputProps) => {
           <TransparentInput
             id={props.id}
             onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            onFocus={props.handleFocus}
+            onBlur={props.handleBlur}
             name={props.id}
             type={props.type}
             data-placeholder={props.placeholder}
             data-pattern={props.pattern}
             data-valid-example={props.example}
             aria-required={props.required}
-            data-charset={props.characterSet}
+            data-characterset={props.characterSet}
             required={props.required}
             title={props.title}
           />
           <MaskSpan  aria-hidden="true" id={props.id + 'Mask'}>
-            <Guide ref={guideRef}>{props.placeholder}</Guide>
+            <Guide ref={guideRef}>{props.characterSet || props.placeholder}</Guide>
           </MaskSpan>
         </Shell>
      </Container>

@@ -61,7 +61,7 @@ const CharacterSetComponent = () => {
       <label htmlFor={text('id','zipca')}>{text('label','Canadian Zip Code')}</label>
       <MaskedInput
         id={text('id','zipca')}
-        placeholder={text('placeholder','xxx xxx')}
+        placeholder={text('placeholder','')}
         name={'zip-code'}
         class={''}
         type={text('type','text')}
