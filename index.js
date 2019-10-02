@@ -1,1 +1,1 @@
-export * from './js/maskedinput.react'
+export * from './src/MaskedInput'
