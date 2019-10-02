@@ -1,6 +1,6 @@
 {
   "name": "input-masking",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Styleable, Accessble Input Masking",
   "main": "index.js",
   "scripts": {
