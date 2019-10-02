@@ -9,8 +9,8 @@ var InputMask = function ( opts ) {
       masked: opts.masked || document.querySelectorAll( this.d.masked ),
       mNum: opts.mNum || this.d.mNum,
       mChar: opts.mChar || this.d.mChar,
-      error: opts.onError || this.d.onError
-    }
+      error: opts.onError || this.d.onError,
+    };
   } else {
     this.opts = this.d;
     this.opts.masked = document.querySelectorAll( this.opts.masked );
@@ -37,7 +37,7 @@ var inputMask = {
     }
 
     for(i = 0; i < this.opts.masked.length; i++) {
-      t = this.opts.masked[i]
+      t = this.opts.masked[i];
       parentClass = t.parentNode.getAttribute('class');
 
       if ( !parentClass || ( parentClass && parentClass.indexOf('shell') === -1 ) ) {
@@ -45,6 +45,13 @@ var inputMask = {
         this.activateMasking(t);
       }
     }
+  },
+
+  setValueOfMask: function (t) {
+    var value = t.value,
+        placeholder = t.getAttribute('data-placeholder');
+
+    return '<i>' + value + '</i>' + placeholder.substr(value.length);
   },
 
   // replaces each masked t with a shall containing the t and it's mask.
@@ -74,13 +81,10 @@ var inputMask = {
     wrap.appendChild(mask);
     t.parentNode.insertBefore( wrap, t );
     wrap.appendChild(t);
-  },
 
-  setValueOfMask : function (e) {
-    var value = e.target.value,
-        placeholder = e.target.getAttribute('data-placeholder');
-
-    return "<i>" + value + "</i>" + placeholder.substr(value.length);
+    if (t.value.length > 0) {
+      mask.innerHTML = this.setValueOfMask(t);
+    }
   },
 
   // add event listeners
@@ -91,7 +95,7 @@ var inputMask = {
         that.handleValueChange.call(that,e);
       }, false);
     } else if (t.attachEvent) { // For IE 8
-        t.attachEvent('onkeyup', function(e) {
+      t.attachEvent('onkeyup', function(e) {
         e.target = e.srcElement;
         that.handleValueChange.call(that, e);
       });
@@ -106,7 +110,7 @@ var inputMask = {
     }
 
     document.getElementById(id).value = this.handleCurrentValue(e);
-    document.getElementById(id + 'Mask').innerHTML = this.setValueOfMask(e);
+    document.getElementById(id + 'Mask').innerHTML = this.setValueOfMask(e.target);
 
   },
 
@@ -117,25 +121,25 @@ var inputMask = {
         i, j, isInt, isLetter, strippedValue;
 
     // strip special characters
-    strippedValue = isCharsetPresent ? value.replace(/\W/g, "") : value.replace(/\D/g, "");
+    strippedValue = isCharsetPresent ? value.replace(/\W/g, '') : value.replace(/\D/g, '');
 
     for (i = 0, j = 0; i < l; i++) {
-        isInt = !isNaN(parseInt(strippedValue[j]));
-        isLetter = strippedValue[j] ? strippedValue[j].match(/[A-Z]/i) : false;
-        matchesNumber = this.opts.mNum.indexOf(placeholder[i]) >= 0;
-        matchesLetter = this.opts.mChar.indexOf(placeholder[i]) >= 0;
-        if ((matchesNumber && isInt) || (isCharsetPresent && matchesLetter && isLetter)) {
-                newValue += strippedValue[j++];
-          } else if ((!isCharsetPresent && !isInt && matchesNumber) || (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))) {
-                //this.opts.onError( e ); // write your own error handling function
-                return newValue;
-        } else {
-            newValue += placeholder[i];
-        }
-        // break if no characters left and the pattern is non-special character
-        if (strippedValue[j] == undefined) {
-          break;
-        }
+      isInt = !isNaN(parseInt(strippedValue[j]));
+      isLetter = strippedValue[j] ? strippedValue[j].match(/[A-Z]/i) : false;
+      matchesNumber = this.opts.mNum.indexOf(placeholder[i]) >= 0;
+      matchesLetter = this.opts.mChar.indexOf(placeholder[i]) >= 0;
+      if ((matchesNumber && isInt) || (isCharsetPresent && matchesLetter && isLetter)) {
+        newValue += strippedValue[j++];
+      } else if ((!isCharsetPresent && !isInt && matchesNumber) || (isCharsetPresent && ((matchesLetter && !isLetter) || (matchesNumber && !isInt)))) {
+        //this.opts.onError( e ); // write your own error handling function
+        return newValue;
+      } else {
+        newValue += placeholder[i];
+      }
+      // break if no characters left and the pattern is non-special character
+      if (strippedValue[j] == undefined) {
+        break;
+      }
     }
     if (e.target.getAttribute('data-valid-example')) {
       return this.validateProgress(e, newValue);
