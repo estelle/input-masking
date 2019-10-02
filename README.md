@@ -1,3 +1,5 @@
+This is a fork of Estelle Wyel's `input-masking` adapted for use as a package with ReactJS.
+
 Input Masking
 =====================
 
@@ -29,20 +31,20 @@ Add either the css file `masking-input.css` to your page, or incorporate the .sc
 Add inputs with `id`, `placeholder` and `pattern` attributes with the class of `masked`. Include `type="tel"` when requiring numbers only.
 ```html
 	 <label for="zip">Zip Code</label>
-  	 <input id="zip" type="tel" placeholder="XXXXX" pattern="\d{5}" 
-  	     class="masked" name="uszipcode" title="5-digit zip code"> 
+  	 <input id="zip" type="tel" placeholder="XXXXX" pattern="\d{5}"
+  	     class="masked" name="uszipcode" title="5-digit zip code">
 ```
 
-If your placeholder includes non-digits and non-letters, no worries. They'll be added by the script. Your mobile users won't have to change their touch keyboards. They simply need to enter letters. 
+If your placeholder includes non-digits and non-letters, no worries. They'll be added by the script. Your mobile users won't have to change their touch keyboards. They simply need to enter letters.
 
-Do make sure that your placeholder would match the regular expression of your pattern if all the X's were converted to integers. 
+Do make sure that your placeholder would match the regular expression of your pattern if all the X's were converted to integers.
 
 If your regular expressions include letters, you must include the made up `data-charset` attribute. Similar to the pattern, include an `X` for each number and an underscore `_` for each required letter.
 
 ```html
 	<label for="zipca">Canadian Zip Code</label>
-  	<input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked" 
-  		data-charset="_X_ X_X" id="zipca" type="text" name="zipcodeca" 
+  	<input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked"
+  		data-charset="_X_ X_X" id="zipca" type="text" name="zipcodeca"
   	    title="6-character alphanumeric zip code in the format of A1A 1A1">
 ```
 
@@ -50,10 +52,26 @@ If the digits allowed by your regular expression are constrained or complicated,
 
 ```html
 	<label for="expiration"> Credit Card Expiration </label>
-    <input id="expiration" type="tel" placeholder="MM/YY" class="masked" 
-    	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" 
-    	data-valid-example="05/18"> 
+    <input id="expiration" type="tel" placeholder="MM/YY" class="masked"
+    	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
+    	data-valid-example="05/18">
 ```
+### React Quickstart
+`npm i input-masking`
+```javascript
+import { MaskedInput } from 'input-masking';
+
+<MaskedInput
+  id="expiration"
+  type="tel"
+  placeholder="MM/YY"
+  pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
+  data-valid-example="05/18"
+  label='Credit Card Expiration'
+/>
+```
+
+The ReactJS component automatically applies a label
 
 ## Accessibility
 
@@ -115,8 +133,8 @@ new InputMask({
 Want to use something other than X in your placeholder look for masked inputs that require both letters and numbers, you can. You can put different characters in your placeholder, as long as your `data-charset` contains Xs and _ only.
 
 ```html
-<input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked" 
-      data-charset="?X? X?X" id="zipca" type="text" name="canadianzip" 
+<input placeholder="XXX XXX" pattern="\w\d\w \d\w\d" class="masked"
+      data-charset="?X? X?X" id="zipca" type="text" name="canadianzip"
         title="6-character alphanumeric code in the format of A1A 1A1">
 ```
 
@@ -129,8 +147,8 @@ new InputMask({
 ```
 
 ```html
-<input placeholder="XXX_XXX" pattern="\w\d\w\_\d\w\d" class="masked" 
-      data-charset="?X?_X?X" id="underscore" type="text" name="underscoredstring" 
+<input placeholder="XXX_XXX" pattern="\w\d\w\_\d\w\d" class="masked"
+      data-charset="?X?_X?X" id="underscore" type="text" name="underscoredstring"
         title="6-character alphanumeric code in the format of A1A_1A1">
 ```
 
@@ -159,20 +177,20 @@ new InputMask({
 
 Handles these test cases:
 
-* OK if the pattern starts with a special character 
-* OK if the next letter is a special character 
-* Can handle more than one special character 
-* Doesn't matter if browser supports placeholder attribute: appears even in IE8 
+* OK if the pattern starts with a special character
+* OK if the next letter is a special character
+* Can handle more than one special character
+* Doesn't matter if browser supports placeholder attribute: appears even in IE8
 * Doesn't matter if browser supports pattern attribute: still works
 * characters can be deleted or added mid input
 * Arrow keys can be used
 * Sets up maxlength based on placeholder length
 * Only uppercase letters are shown (this can be changed)
-* If user enters an invalid character, character deleted 
+* If user enters an invalid character, character deleted
 * Enters special characters automagically
 * No unwanted characters are read by screen reader
 * Supports keyboard, mouse and touchpad
-* Works if the user leaves the input and comes back 
+* Works if the user leaves the input and comes back
 * If user gives focus before a special character, jumps forward if typed in.
 * Matches simple regular expressions
 * Can be made to match complex regular expression
@@ -184,10 +202,10 @@ If the digits allowed by your regular expression are constrained or complicated,
 
 ```html
 	<label for="expiration"> Credit Card Expiration </label>
-    <input id="expiration" type="tel" placeholder="MM/YY" class="masked" 
-    	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" 
+    <input id="expiration" type="tel" placeholder="MM/YY" class="masked"
+    	pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
     	data-valid-example="11/18"
-    	title="2-digit month and 2-digit year greater than 01/15"> 
+    	title="2-digit month and 2-digit year greater than 01/15">
 ```
 
 I've taken care of MM in `masking.validateProgress()`, because that is common. If you have  exceptions, add the exceptions there. If you need an expiration month, it is best to use `<input type="month">` instead.
@@ -203,24 +221,24 @@ I've taken care of MM in `masking.validateProgress()`, because that is common. I
 	 <ul>
            <li>
 	    <label htmlFor="month">Month</label>
-            <MaskedInput 
-            id="month" 
-            type="tel" 
+            <MaskedInput
+            id="month"
+            type="tel"
             placeholder="MM/YY"
-            pattern="(1[0-2]|0[1-9])\/\d\d" 
+            pattern="(1[0-2]|0[1-9])\/\d\d"
             data-valid-example="11/18"
             title="2-digit month and 2-digit year greater than 01/15" />
         </li>
         <li>
           <label htmlFor="zip">Zip Code</label>
-          <MaskedInput 
-            id="zip" 
-            type="tel" 
-            placeholder="XXXXX" 
-            pattern="\d{5}" 
+          <MaskedInput
+            id="zip"
+            type="tel"
+            placeholder="XXXXX"
+            pattern="\d{5}"
             required
             title="5-digit zip code" />
-        </li>      
+        </li>
         </ul>,
         document.getElementById('component')
     );
@@ -229,7 +247,7 @@ I've taken care of MM in `masking.validateProgress()`, because that is common. I
 
 ## Contributors
 
-[Estelle Weyl](http://twitter.com/estellevw). 
+[Estelle Weyl](http://twitter.com/estellevw).
 [Alex Schmitz](http://twitter.com/alexrschmitz).
 
 ## License
