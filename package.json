@@ -4,7 +4,8 @@
   "description": "Styleable, Accessble Input Masking",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 9001"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,18 @@
   "dependencies": {
     "react": "^16.10.1",
     "styled-components": "^4.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.6.0",
+    "@storybook/addon-knobs": "^5.2.1",
+    "@storybook/react": "^5.2.1",
+    "@types/storybook__react": "^4.0.2",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-styled-components": "^1.10.6",
+    "react-dom": "^16.10.1",
+    "typescript": "^3.6.3"
   }
 }
