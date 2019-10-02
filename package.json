@@ -1,6 +1,6 @@
 {
   "name": "input-masking",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Styleable, Accessble Input Masking",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "@types/storybook__react": "^4.0.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
+    "prettier": "^1.18.2",
     "react-dom": "^16.10.1",
     "storybook-readme": "^5.0.8",
     "typescript": "^3.6.3"
