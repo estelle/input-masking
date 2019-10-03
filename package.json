@@ -23,7 +23,7 @@
     "url": "https://github.com/stephencweiss/input-masking/issues"
   },
   "homepage": "https://github.com/stephencweiss/input-masking#readme",
-  "peerDependencies": {
+  "dependencies": {
     "react": "^16.10.1",
     "styled-components": "^4.4.0"
   },
