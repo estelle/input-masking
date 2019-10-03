@@ -1,6 +1,6 @@
 {
   "name": "input-masking",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Styleable, Accessble Input Masking",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/stephencweiss/input-masking/issues"
   },
   "homepage": "https://github.com/stephencweiss/input-masking#readme",
-  "dependencies": {
+  "peerDependencies": {
     "react": "^16.10.1",
     "styled-components": "^4.4.0"
   },
