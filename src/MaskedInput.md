@@ -25,7 +25,7 @@ const MyComponent = () => {
           id={"zip"}
           placeholder={"xxxxx-xxxx"}
           name={"zip-code"}
-          class={""}
+          className={"custom-class"}
           type={"text"}
           value={val}
           handleBlur={handleBlur}

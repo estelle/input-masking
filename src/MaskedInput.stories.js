@@ -1,19 +1,48 @@
 import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
-import { MaskedInput } from "./Maskedinput";
+import { MaskedInput } from "./MaskedInput";
 import { text, boolean } from "@storybook/addon-knobs";
 
-import styled from "styled-components";
-
-const StyledMaskedInput = styled(MaskedInput)`
-  border: 2px solid red;
-  background: rgba(216, 221, 208, 0.5);
-  margin: 14px;
-  padding: 10px;
-`;
+import "./custom.css";
 
 import Readme from "./MaskedInput.md";
 
+storiesOf("MaskedInput", module)
+  .addParameters({
+    readme: {
+      content: Readme
+    }
+  })
+  .addParameters({
+    info: `Original component documentation: https://github.com/estelle/input-masking`
+  })
+  .add("default", () => (
+    <div style={{ padding: "50px" }}>
+      <ControllingComponent />
+    </div>
+  ))
+  .add("with characterSet", () => (
+    <div style={{ padding: "50px" }}>
+      <CharacterSetComponent />
+    </div>
+  ))
+  .add("with custom styling", () => (
+    <div style={{ padding: "50px" }}>
+      <StyledComponent />
+    </div>
+  ))
+  .add("with custom placeholder", () => (
+    <div style={{ padding: "50px" }}>
+      <CustomPlaceholder />
+    </div>
+  ))
+  .add("with custom styledComponent", () => (
+    <div style={{ padding: "50px" }}>
+      <CustomStyled />
+    </div>
+  ));
+
+// Helpers
 const CustomPlaceholder = () => {
   const [val, setVal] = useState("");
   const handleChange = event => {
@@ -65,13 +94,14 @@ const CustomStyled = () => {
         <label classname={"label"} htmlFor={text("id", "expiration")}>
           {text("label", "Zip Code")}
         </label>
-        <StyledMaskedInput
+        <MaskedInput
           id={text("id", "expiration")}
           placeholder={text("placeholder", "MM/YY")}
           name={"zip-code"}
           type={text("type", "tel")}
           value={text("value", val)}
           handleBlur={handleBlur}
+          className={"custom"}
           handleChange={handleChange}
           label={text("label", "Zip Code")}
           pattern={text("pattern", "(1[0-2]|0[1-9])/(1[5-9]|[0-9][0-9])")}
@@ -103,7 +133,6 @@ const ControllingComponent = () => {
           id={text("id", "zip")}
           placeholder={text("placeholder", "ZZZZZ-YYYY")}
           name={"zip-code"}
-          class={""}
           type={text("type", "text")}
           value={text("value", val)}
           handleBlur={handleBlur}
@@ -139,7 +168,7 @@ const CharacterSetComponent = () => {
           id={text("id", "zipca")}
           placeholder={text("placeholder", "")}
           name={"zip-code"}
-          class={""}
+          // class={""}
           type={text("type", "text")}
           value={text("value", val)}
           handleBlur={handleBlur}
@@ -181,7 +210,7 @@ const StyledComponent = () => {
           id={"zip"}
           placeholder={"xxxxx-xxxx"}
           name={"zip-code"}
-          class={""}
+          // class={""}
           type={"text"}
           value={val}
           handleBlur={handleBlur}
@@ -196,38 +225,3 @@ const StyledComponent = () => {
     </>
   );
 };
-
-storiesOf("MaskedInput", module)
-  .addParameters({
-    readme: {
-      content: Readme
-    }
-  })
-  .addParameters({
-    info: `Original component documentation: https://github.com/estelle/input-masking`
-  })
-  .add("default", () => (
-    <div style={{ padding: "50px" }}>
-      <ControllingComponent />
-    </div>
-  ))
-  .add("with characterSet", () => (
-    <div style={{ padding: "50px" }}>
-      <CharacterSetComponent />
-    </div>
-  ))
-  .add("with custom styling", () => (
-    <div style={{ padding: "50px" }}>
-      <StyledComponent />
-    </div>
-  ))
-  .add("with custom placeholder", () => (
-    <div style={{ padding: "50px" }}>
-      <CustomPlaceholder />
-    </div>
-  ))
-  .add("with custom styledComponent", () => (
-    <div style={{ padding: "50px" }}>
-      <CustomStyled />
-    </div>
-  ));

@@ -1,0 +1,8 @@
+/* This custom CSS is for demonstration purposes to show how you might define CSS locally to customize the Input */
+
+.custom {
+  border: 2px solid red;
+  background: rgba(216, 221, 208, 0.5);
+  margin: 14px;
+  padding: 10px;
+}
