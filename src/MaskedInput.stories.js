@@ -92,25 +92,22 @@ const CustomStyled = () => {
 
       <div style={{ display: "flex" }}>
         <label classname={"label"} htmlFor={text("id", "expiration")}>
-          {text("label", "Zip Code")}
+          {text("label", "date")}
         </label>
         <MaskedInput
           id={text("id", "expiration")}
           placeholder={text("placeholder", "MM/YY")}
-          name={"zip-code"}
+          name={"date"}
           type={text("type", "tel")}
           value={text("value", val)}
           handleBlur={handleBlur}
           className={"custom"}
           handleChange={handleChange}
-          label={text("label", "Zip Code")}
-          pattern={text("pattern", "(1[0-2]|0[1-9])/(1[5-9]|[0-9][0-9])")}
-          name={text("name", "zip")}
+          label={text("label", "date")}
+          pattern={text("pattern", "(1[0-2]|0[1-9])/([0-9][0-9])")}
+          name={text("name", "date")}
           validExample={text("validExample", "11/18")}
-          title={text(
-            "title",
-            "2-digit month and 2-digit year greater than 01/15"
-          )}
+          title={text("title", "2-digit month and 2-digit year")}
         />
       </div>
     </>
