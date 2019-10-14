@@ -1,45 +1,51 @@
 {
-  "name": "input-masking",
-  "version": "0.0.1",
-  "description": "Styleable, Accessble Input Masking",
-  "main": "dist/masked-input.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "start-storybook -p 9001",
-    "build-storybook": "build-storybook -c .storybook"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stephencweiss/input-masking"
-  },
-  "keywords": [
-    "a11y",
-    "input",
-    "masking"
-  ],
-  "author": "Stephen Weiss",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/stephencweiss/input-masking/issues"
-  },
-  "homepage": "https://github.com/stephencweiss/input-masking#readme",
-  "dependencies": {
-    "react": "^16.10.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.6.0",
-    "@storybook/addon-a11y": "^5.2.1",
-    "@storybook/addon-knobs": "^5.2.1",
-    "@storybook/react": "^5.2.1",
-    "@types/storybook__react": "^4.0.2",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-styled-components": "^1.10.6",
-    "prettier": "^1.18.2",
-    "react-dom": "^16.10.1",
-    "storybook-readme": "^5.0.8",
-    "typescript": "^3.6.3"
-  }
+    "name": "react-input-masking",
+    "version": "0.0.1",
+    "description": "Styleable, Accessble Input Masking",
+    "main": "dist/masked-input.js",
+    "scripts": {
+        "build": "webpack --config webpack.prod.js",
+        "build-storybook": "build-storybook -c .storybook",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "storybook": "start-storybook -p 9001"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stephencweiss/react-input-masking"
+    },
+    "keywords": [
+        "a11y",
+        "input",
+        "masking"
+    ],
+    "author": "Stephen Weiss",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/stephencweiss/react-input-masking/issues"
+    },
+    "homepage": "https://github.com/stephencweiss/react-input-masking#readme",
+    "dependencies": {
+        "react": "^16.10.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.6.2",
+        "@babel/preset-env": "^7.6.2",
+        "@babel/preset-react": "^7.0.0",
+        "@babel/preset-typescript": "^7.6.0",
+        "@storybook/addon-a11y": "^5.2.1",
+        "@storybook/addon-knobs": "^5.2.1",
+        "@storybook/react": "^5.2.1",
+        "@types/storybook__react": "^4.0.2",
+        "babel-loader": "^8.0.6",
+        "clean-webpack-plugin": "^3.0.0",
+        "css-loader": "^3.2.0",
+        "prettier": "^1.18.2",
+        "react-dom": "^16.10.1",
+        "storybook-readme": "^5.0.8",
+        "style-loader": "^1.0.0",
+        "ts-loader": "^6.2.0",
+        "typescript": "^3.6.3",
+        "webpack-cli": "^3.3.9",
+        "webpack-merge": "^4.2.2"
+    }
 }

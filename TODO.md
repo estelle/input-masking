@@ -1,0 +1,4 @@
+- [ ] Host Storybook
+- [ ] Make sure Typescript types are working as expected
+- [ ] Ensure build is optimized
+- [ ] Add tests

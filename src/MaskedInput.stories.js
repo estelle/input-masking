@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
-import { MaskedInput } from "./MaskedInput";
+import { MaskedInput } from "./index";
 import { text, boolean } from "@storybook/addon-knobs";
 
 import "./custom.css";
@@ -12,9 +12,6 @@ storiesOf("MaskedInput", module)
     readme: {
       content: Readme
     }
-  })
-  .addParameters({
-    info: `Original component documentation: https://github.com/estelle/input-masking`
   })
   .add("default", () => (
     <div style={{ padding: "50px" }}>

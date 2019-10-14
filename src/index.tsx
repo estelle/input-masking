@@ -17,12 +17,12 @@ interface MaskedInputProps {
   required?: boolean;
   uppercase?: boolean;
   validExample?: string;
-  handleChange: (e: Event) => void;
-  handleBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  handleFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  handleFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-export const MaskedInput = (props: MaskedInputProps) => {
+const MaskedInput = (props: MaskedInputProps) => {
   const maskRef = useRef(null);
   const {
     id,
@@ -44,20 +44,22 @@ export const MaskedInput = (props: MaskedInputProps) => {
     ...rest
   } = props;
 
-  const onChange = function(e) {
-    e.target.value = handleCurrentValue(e);
-    maskRef.current.innerHTML = setGuideValue(e);
-    props.handleChange && props.handleChange(e);
+  const onChange = function(event: React.ChangeEvent<HTMLInputElement>) {
+    event.target.value = handleCurrentValue(event);
+    maskRef.current.innerHTML = setGuideValue(event);
+    props.handleChange && props.handleChange(event);
   };
 
-  const handleCurrentValue = function(e) {
+  const handleCurrentValue = function(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
     const isCharsetPresent = !!props.characterSet;
     const placeholder = props.characterSet || props.placeholder;
     const maskedNumber = "#XZdDmMyY0123456789"; // the available matches for a number charset
     const maskedLetter =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"; // the available matches for a alphabetic charset
 
-    const value = e.target.value;
+    const value = event.target.value;
 
     // strip special characters
     const strippedValue = isCharsetPresent
@@ -106,8 +108,8 @@ export const MaskedInput = (props: MaskedInputProps) => {
     return newValue;
   };
 
-  const setGuideValue = function(e) {
-    const value = e.target.value;
+  const setGuideValue = function(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
     const placeholder = props.characterSet || props.placeholder;
     return `<span style="color: transparent;">${value}</span>${placeholder.substr(
       value.length
@@ -151,3 +153,5 @@ export const MaskedInput = (props: MaskedInputProps) => {
     </div>
   );
 };
+
+export default MaskedInput;
