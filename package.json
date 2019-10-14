@@ -1,5 +1,5 @@
 {
-    "name": "input-masking",
+    "name": "react-input-masking",
     "version": "0.0.1",
     "description": "Styleable, Accessble Input Masking",
     "main": "dist/masked-input.js",
@@ -11,7 +11,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/stephencweiss/input-masking"
+        "url": "git+https://github.com/stephencweiss/react-input-masking"
     },
     "keywords": [
         "a11y",
@@ -21,9 +21,9 @@
     "author": "Stephen Weiss",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/stephencweiss/input-masking/issues"
+        "url": "https://github.com/stephencweiss/react-input-masking/issues"
     },
-    "homepage": "https://github.com/stephencweiss/input-masking#readme",
+    "homepage": "https://github.com/stephencweiss/react-input-masking#readme",
     "dependencies": {
         "react": "^16.10.1"
     },

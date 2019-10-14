@@ -13,9 +13,6 @@ storiesOf("MaskedInput", module)
       content: Readme
     }
   })
-  .addParameters({
-    info: `Original component documentation: https://github.com/estelle/input-masking`
-  })
   .add("default", () => (
     <div style={{ padding: "50px" }}>
       <ControllingComponent />
