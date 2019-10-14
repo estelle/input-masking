@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
-import { MaskedInput } from "./MaskedInput";
+import { MaskedInput } from "./index";
 import { text, boolean } from "@storybook/addon-knobs";
 
 import "./custom.css";

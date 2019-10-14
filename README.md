@@ -95,7 +95,11 @@ function () { React.render(
 </ul>
 ```
 
-## Contributors
+## Contributing
+
+I welcome contributors! I don't have a process yet, but if folks start contributing, I'll implement a process ASAP.
+
+In the mean time, feel free to submit a bug or, if you're up to making the fix yourself, a PR.
 
 ## License
 
