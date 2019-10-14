@@ -1,0 +1,45 @@
+.transparent-input {
+  position: absolute;
+  background-color: transparent;
+}
+
+.consistent-typography {
+  padding: "";
+  border: "";
+  margin: "";
+  font-family: inherit;
+  font-size: 1em;
+  padding-right: 10px;
+  padding-left: 3px;
+  padding-top: 1px;
+  line-height: 1;
+}
+
+.container {
+  position: relative;
+  display: inherit;
+}
+
+.mask-wrapper {
+  position: absolute;
+  pointer-events: none !important;
+  border: 3px solid transparent !important;
+  background-color: transparent !important;
+  z-index: -1;
+  height: inherit;
+}
+
+.mask {
+  background: transparent !important;
+  border: 3px solid transparent !important;
+  background-color: transparent !important;
+  white-space: nowrap;
+  display: contents;
+  pointer-events: none !important;
+  color: #ccc;
+  z-index: -1;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

@@ -1,78 +1,50 @@
 import React, { useRef } from "react";
-import {
-  Container,
-  MaskedInputStyles,
-  Mask,
-  MaskWrapper,
-  TransparentInput
-} from "./MaskedInput.styled";
-
-const validateProgress = function(
-  value: string,
-  validExample: string,
-  pattern: string,
-  placeholder: string
-) {
-  const regExpPattern = new RegExp(pattern);
-  const valLength = value.length;
-  let testValue = "";
-  //convert to months
-  if (valLength === 1 && placeholder.toUpperCase().substr(0, 2) == "MM") {
-    if (Number(value) > 1 && Number(value) < 10) {
-      value = "0" + value;
-    }
-    return value;
-  }
-
-  for (let i = valLength; i >= 0; i--) {
-    testValue = value + validExample.substr(value.length);
-    if (regExpPattern.test(testValue)) {
-      return value;
-    } else {
-      value = value.substr(0, value.length - 1);
-    }
-  }
-
-  return value;
-};
+import validateProgress from "./helpers/validateProgress";
+import "./masked-input.css";
 
 interface MaskedInputProps {
   id: string;
-  class: string;
+  name: string;
   pattern: string;
   placeholder: string;
-  name: string;
   title: string;
   type: string;
   value: string;
   characterSet?: string;
+  className?: string;
   example?: string;
   number?: string;
   required?: boolean;
+  uppercase?: boolean;
   validExample?: string;
   handleChange: (e: Event) => void;
-  handleBlur?: (e: Event) => void;
-  handleFocus?: (e: Event) => void;
+  handleBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  handleFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
+export const MaskedInput = (props: MaskedInputProps) => {
   const maskRef = useRef(null);
   const {
     id,
+    name, // TODO: confirm this is used
+    pattern,
+    placeholder,
+    title,
+    type,
+    value,
+    characterSet,
+    className,
+    number, // TODO: Confirm this is used
+    required,
+    uppercase,
+    validExample,
+    handleChange,
     handleBlur,
     handleFocus,
-    type,
-    placeholder,
-    pattern,
-    validExample,
-    required,
-    characterSet,
-    title,
-    value,
     ...rest
   } = props;
 
-  const handleChange = function(e) {
+  const onChange = function(e) {
     e.target.value = handleCurrentValue(e);
     maskRef.current.innerHTML = setGuideValue(e);
     props.handleChange && props.handleChange(e);
@@ -143,11 +115,13 @@ export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
   };
 
   return (
-    <Container>
-      <TransparentInput
+    <div className={"container"}>
+      <input
+        className={`transparent-input consistent-typography ${className} ${uppercase &&
+          "uppercase"}`}
         {...rest}
         id={id}
-        onChange={handleChange}
+        onChange={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         name={id}
@@ -160,11 +134,20 @@ export const MaskedInput = (props: MaskedInputProps & MaskedInputStyles) => {
         required={required}
         title={title}
       />
-      <MaskWrapper {...rest}>
-        <Mask ref={maskRef} {...rest}>
+      <span
+        className={`mask-wrapper consistent-typography ${className} ${uppercase &&
+          "uppercase"}`}
+        {...rest}
+      >
+        <span
+          className={`mask consistent-typography ${className} ${uppercase &&
+            "uppercase"}`}
+          ref={maskRef}
+          {...rest}
+        >
           {characterSet || placeholder}
-        </Mask>
-      </MaskWrapper>
-    </Container>
+        </span>
+      </span>
+    </div>
   );
 };
