@@ -4,6 +4,7 @@ node_modules
 *.iml
 .DS_Store
 .npmrc
+package-lock.json
 
 # generated js files
 dist
