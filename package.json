@@ -6,8 +6,9 @@
     "scripts": {
         "build": "webpack --config webpack.prod.js",
         "build-storybook": "build-storybook -c .storybook",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "storybook": "start-storybook -p 9001"
+        "publish": "npm run build && npm publish",
+        "storybook": "start-storybook -p 9001",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
