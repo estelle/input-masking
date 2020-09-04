@@ -17,7 +17,7 @@ The user can enter letters and numbers. All other characters, like spaces, dashe
 Include `masking-input.js`.
 
 ```html
-<script src="path/js/masking-input.js" data-autoinit="true"></script>`
+<script src="path/js/masking-input.js" data-autoinit="true"></script>
 ```
 
 Add either the css file `masking-input.css` to your page, or incorporate the .scss component into your sass build
